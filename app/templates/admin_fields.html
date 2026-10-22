@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}จัดการสนามฟุตบอล{% endblock %}
+{% block content %}
+<h1>จัดการสนามฟุตบอล</h1>
+<p>แก้ไขข้อมูลสนามและเปิด/ปิดรับการจอง (ไม่ลบประวัติการจอง)</p>
+<table border="1" cellpadding="8"><thead><tr><th>ID</th><th>ชื่อสนาม</th><th>ประเภท</th><th>ราคา/ชั่วโมง</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody>
+{% for field in fields %}<tr><td>{{ field.id }}</td><td>{{ field.name }}</td><td>{{ field.field_type }}</td><td>{{ "{:,.0f}".format(field.price_per_hour) }} บาท</td><td>{{ 'เปิด' if field.is_active else 'ปิด' }}</td><td><a href="{{ url_for('main.admin_edit_field', field_id=field.id) }}">แก้ไข</a></td></tr>{% endfor %}
+</tbody></table>
+<p><a href="{{ url_for('main.admin_dashboard') }}">กลับหน้า Admin</a></p>
+{% endblock %}

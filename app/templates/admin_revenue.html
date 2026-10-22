@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}รายงานมูลค่าการจอง{% endblock %}
+{% block content %}
+<h1>รายงานมูลค่าการจองที่ยืนยัน</h1>
+<p>รายงานนี้เป็นมูลค่าการจองสถานะ confirmed ไม่ใช่ยอดเงินที่ชำระแล้ว</p>
+<h2>รวม {{ "{:,.0f}".format(total) }} บาท</h2>
+<table border="1" cellpadding="8"><thead><tr><th>วันที่จองสนาม</th><th>จำนวนรายการ</th><th>มูลค่า</th></tr></thead><tbody>
+{% for date, count, amount in rows %}<tr><td>{{ date.strftime('%d/%m/%Y') }}</td><td>{{ count }}</td><td>{{ "{:,.0f}".format(amount) }} บาท</td></tr>{% else %}<tr><td colspan="3">ไม่มีข้อมูล</td></tr>{% endfor %}
+</tbody></table><p><a href="{{ url_for('main.admin_dashboard') }}">กลับหน้า Admin</a></p>
+{% endblock %}

@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>
+        {% block title %}Football Booking Platform{% endblock %}
+    </title>
+</head>
+
+<body>
+
+<header>
+    <div class="navbar">
+
+        <div class="logo">
+            ⚽ Football Booking
+        </div>
+
+        <nav>
+            <a href="{{ url_for('main.home') }}">หน้าแรก</a>
+            <a href="{{ url_for('main.fields') }}">จองสนาม</a>
+
+            {% if session.get('user_id') %}
+
+                <span>
+                    สวัสดี {{ session.get('username') }}
+                </span>
+
+                <a href="{{ url_for('main.my_bookings') }}">
+                    การจองของฉัน
+                </a>
+
+                {% if is_admin %}
+
+                    <a href="{{ url_for('main.admin_bookings') }}">
+                        จัดการการจอง
+                    </a>
+
+                    <a href="{{ url_for('main.admin_revenue') }}">
+                        รายงานรายได้
+                    </a>
+
+                    <a href="{{ url_for('main.admin_payments') }}">
+                        รายงานการชำระเงิน
+                    </a>
+
+                {% endif %}
+
+                <form action="{{ url_for('main.logout') }}"
+                      method="POST">
+
+                    <input type="hidden"
+                           name="csrf_token"
+                           value="{{ session.get('logout_csrf_token', '') }}">
+
+                    <button type="submit">
+                        ออกจากระบบ
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <a href="{{ url_for('main.register') }}">
+                    สมัครสมาชิก
+                </a>
+
+                <a href="{{ url_for('main.login') }}">
+                    เข้าสู่ระบบ
+                </a>
+
+            {% endif %}
+        </nav>
+
+    </div>
+</header>
+
+<main>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="flash-message flash-{{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+</main>
+
+</body>
+</html>

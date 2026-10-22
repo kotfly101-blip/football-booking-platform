@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}แก้ไขข้อมูลสมาชิก{% endblock %}
+
+{% block content %}
+
+<h1>แก้ไขข้อมูลสมาชิก</h1>
+
+<p>รหัสสมาชิก: {{ member.id }}</p>
+
+<form method="POST"
+      action="{{ url_for('main.admin_edit_member', member_id=member.id) }}">
+
+    <input type="hidden"
+           name="csrf_token"
+           value="{{ csrf_token }}">
+
+    <p>
+        <label for="username">ชื่อผู้ใช้</label>
+        <input type="text"
+               id="username"
+               name="username"
+               value="{{ member.username }}"
+               maxlength="80"
+               required>
+    </p>
+
+    <p>
+        <label for="email">อีเมล</label>
+        <input type="email"
+               id="email"
+               name="email"
+               value="{{ member.email }}"
+               maxlength="120"
+               required>
+    </p>
+
+    <button type="submit">บันทึกการแก้ไข</button>
+
+    <a href="{{ url_for('main.admin_members') }}">
+        ยกเลิก
+    </a>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}จัดการสมาชิก{% endblock %}
+
+{% block content %}
+
+<h1>จัดการสมาชิก</h1>
+<form method="GET"
+      action="{{ url_for('main.admin_members') }}">
+
+    <input
+        type="text"
+        name="q"
+        placeholder="ค้นหาชื่อผู้ใช้หรืออีเมล"
+        value="{{ keyword }}"
+    >
+
+    <button type="submit">ค้นหา</button>
+
+    <a href="{{ url_for('main.admin_members') }}">
+        ล้างการค้นหา
+    </a>
+
+</form>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>รหัสสมาชิก</th>
+            <th>ชื่อผู้ใช้</th>
+            <th>อีเมล</th>
+            <th>สิทธิ์</th>
+            <th>จัดการ</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for member in members %}
+            <td>{{ member.id }}</td>
+            <td>{{ member.username }}</td>
+            <td>{{ member.email }}</td>
+            <td>
+                {% if member.is_admin %}
+                    ผู้ดูแลระบบ
+                {% else %}
+                    สมาชิกทั่วไป
+                {% endif %}
+            </td>
+            <td>
+    <a href="{{ url_for('main.admin_edit_member', member_id=member.id) }}">แก้ไข</a>
+</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5">ยังไม่มีสมาชิก</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

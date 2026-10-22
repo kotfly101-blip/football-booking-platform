@@ -1,0 +1,121 @@
+
+{% extends "base.html" %}
+
+{% block title %}การจองของฉัน{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <h2>ประวัติการจองของฉัน</h2>
+    <p>รายการจองที่สร้างขณะเข้าสู่ระบบด้วยบัญชีนี้</p>
+
+    {% if bookings %}
+    <div style="overflow-x:auto;">
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>หมายเลข</th>
+                    <th>สนาม</th>
+                    <th>วันที่</th>
+                    <th>เวลา</th>
+                    <th>ราคา</th>
+                    <th>สถานะการจอง</th>
+                    <th>สถานะชำระเงิน</th>
+                    <th>จัดการ</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for b in bookings %}
+                {% set payment = b.payment %}
+
+                <tr>
+                    <td>{{ b.id }}</td>
+                    <td>{{ b.field.name }}</td>
+
+                    <td>
+                        {{ b.booking_date.strftime('%d/%m/%Y') }}
+                    </td>
+
+                    <td>
+                        {{ b.start_time.strftime('%H:%M') }}
+                        –
+                        {{ b.end_time.strftime('%H:%M') }}
+                    </td>
+
+                    <td>
+                        {{ '{:,}'.format(b.total_price) }} บาท
+                    </td>
+
+                    <td>
+                        {% if b.status == 'confirmed' %}
+                            ยืนยันแล้ว
+                        {% elif b.status == 'cancelled' %}
+                            ยกเลิกแล้ว
+                        {% elif b.status == 'pending' %}
+                            รอยืนยัน
+                        {% else %}
+                            {{ b.status }}
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if payment and payment.status == 'paid' %}
+                            ชำระแล้ว
+                        {% else %}
+                            ยังไม่ชำระ
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        
+{% if payment and payment.status == 'paid' %}
+
+    <div>ชำระแล้ว ไม่สามารถยกเลิกได้</div>
+
+    <div style="margin-top: 8px;">
+        <a href="{{ url_for('main.view_receipt', booking_id=b.id) }}"
+           target="_blank"
+           rel="noopener noreferrer">
+            ดูใบเสร็จ
+        </a>
+    </div>
+
+
+                        {% elif b.status == 'cancelled' %}
+
+                            ยกเลิกแล้ว
+
+                        {% else %}
+
+                            <form method="post"
+                                  action="{{ url_for('main.cancel_booking', booking_id=b.id) }}"
+                                  onsubmit="return confirm('ยืนยันยกเลิกการจอง?')">
+
+                                <input type="hidden"
+                                       name="csrf_token"
+                                       value="{{ csrf_token }}">
+
+                                <button type="submit">
+                                    ยกเลิก
+                                </button>
+
+                            </form>
+
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+        <p>
+            ยังไม่มีรายการจองที่เชื่อมกับบัญชีนี้
+            กรุณาเข้าสู่ระบบก่อนทำรายการจองใหม่
+        </p>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}จองสนามฟุตบอล{% endblock %}
+
+{% block content %}
+
+<style>
+  .booking-container {
+    max-width: 650px;
+    margin: 30px auto;
+  }
+
+  .booking-card {
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .booking-card h1 {
+    margin-top: 0;
+    color: #111827;
+  }
+
+  .field-info {
+    background: #f0fdf4;
+    padding: 18px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+  }
+
+  .field-price {
+    color: #15803d;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .booking-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  .form-group label {
+    font-weight: 600;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font: inherit;
+  }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+
+  .total-box {
+    background: #f3f4f6;
+    padding: 18px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .total-price {
+    color: #15803d;
+    font-size: 23px;
+    font-weight: bold;
+  }
+
+  .booking-btn {
+    background: #16a34a;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .booking-btn:hover {
+    background: #15803d;
+  }
+
+  .booking-alert {
+    padding: 14px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .booking-alert.success {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  @media (max-width: 600px) {
+    .booking-card {
+      padding: 18px;
+    }
+
+    .booking-form {
+      grid-template-columns: 1fr;
+    }
+
+    .full-width {
+      grid-column: auto;
+    }
+  }
+</style>
+
+<div class="booking-container">
+  <div class="booking-card">
+
+    <h1>จอง {{ field.name }}</h1>
+
+    <div class="field-info">
+      <div id="fieldPrice" data-price="{{ field.price_per_hour }}" hidden></div>
+      <p>ประเภท: {{ field.field_type }}</p>
+      <div class="field-price">
+        {{ "{:,.0f}".format(field.price_per_hour) }}
+        บาท/ชั่วโมง
+      </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="booking-alert {% if category == 'success' %}success{% endif %}" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endwith %}
+
+    <form method="POST" class="booking-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <div class="form-group">
+        <label for="customer_name">ชื่อผู้จอง</label>
+        <input type="text" id="customer_name" name="customer_name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">เบอร์โทรศัพท์</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+
+      <div class="form-group">
+        <label for="booking_date">วันที่จอง</label>
+        <input type="date" id="booking_date" name="booking_date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="start_time">เวลาเริ่มต้น</label>
+        <input type="time" id="start_time" name="start_time" required>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="hours">จำนวนชั่วโมง</label>
+        <select id="hours" name="hours" required>
+          {% for h in range(1, 7) %}
+          <option value="{{ h }}">
+            {{ h }} ชั่วโมง
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="end_time">เวลาสิ้นสุด (คำนวณอัตโนมัติ)</label>
+        <input type="time" id="end_time" readonly>
+      </div>
+
+      <div class="total-box full-width">
+        <strong>ยอดรวม</strong>
+        <span class="total-price" id="totalPrice">
+          -
+        </span>
+      </div>
+
+      <button type="submit" class="booking-btn full-width">
+        ยืนยันการจอง
+      </button>
+
+    </form>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const hoursSelect = document.getElementById("hours");
+    const startTime = document.getElementById("start_time");
+    const endTime = document.getElementById("end_time");
+    const totalPrice = document.getElementById("totalPrice");
+    const fieldPrice = document.getElementById("fieldPrice");
+
+    const pricePerHour = Number(fieldPrice.dataset.price);
+
+    function updateBooking() {
+      const hours = Number(hoursSelect.value);
+      const total = pricePerHour * hours;
+
+      totalPrice.textContent =
+        total.toLocaleString("th-TH", {
+          maximumFractionDigits: 0
+        }) + " บาท";
+
+      if (!startTime.value) {
+        endTime.value = "";
+        startTime.setCustomValidity("");
+        return;
+      }
+
+      const [hour, minute] = startTime.value
+        .split(":")
+        .map(Number);
+
+      const endHour = hour + hours;
+
+      if (endHour >= 24) {
+        endTime.value = "";
+        startTime.setCustomValidity(
+          "เวลาสิ้นสุดต้องไม่เกินเที่ยงคืน"
+        );
+        return;
+      }
+
+      startTime.setCustomValidity("");
+
+      endTime.value =
+        String(endHour).padStart(2, "0") +
+        ":" +
+        String(minute).padStart(2, "0");
+    }
+
+    hoursSelect.addEventListener("change", updateBooking);
+    startTime.addEventListener("input", updateBooking);
+
+    updateBooking();
+  });
+</script>
+
+
+{% endblock %}

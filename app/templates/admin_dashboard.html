@@ -1,0 +1,54 @@
+
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<h1>ระบบผู้ดูแลสนามฟุตบอล</h1>
+<p>ยินดีต้อนรับ Admin: {{ user.username }}</p>
+
+<h2>ภาพรวมระบบ</h2>
+
+<div class="dashboard-grid">
+    <div class="stat-card">
+        <h3>สมาชิกทั้งหมด</h3>
+        <p>{{ total_users }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>การจองทั้งหมด</h3>
+        <p>{{ total_bookings }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>การจองที่ยืนยัน</h3>
+        <p>{{ confirmed_bookings }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>การจองที่ยกเลิก</h3>
+        <p>{{ cancelled_bookings }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>มูลค่าการจองที่ยืนยัน</h3>
+        <p>{{ "{:,.0f}".format(confirmed_revenue) }} บาท</p>
+    </div>
+</div>
+
+<h2>เมนูจัดการระบบ</h2>
+<ul>
+    <li>
+        <a href="{{ url_for('main.admin_bookings') }}">
+            จัดการการจองสนาม
+        </a>
+    </li>
+    <li>
+        <a href="{{ url_for('main.admin_members') }}">
+            จัดการสมาชิก
+        </a>
+    </li>
+    <li><a href="{{ url_for('main.admin_fields') }}">จัดการสนามฟุตบอล</a></li>
+    <li><a href="{{ url_for('main.admin_revenue') }}">รายงานมูลค่าการจองที่ยืนยัน</a></li>
+</ul>
+{% endblock %}

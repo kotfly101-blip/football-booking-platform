@@ -1,0 +1,23 @@
+
+{% extends "base.html" %}
+
+{% block title %}รายการสนามฟุตบอล{% endblock %}
+
+{% block content %}
+<h1>สนามฟุตบอลของเรา</h1>
+<p>เลือกสนามที่ต้องการจองได้เลย</p>
+
+<div class="field-grid">
+    {% for field in fields %}
+    <div class="field-card">
+        <h2>{{ field.name }}</h2>
+        <p>ประเภท: {{ field.field_type }}</p>
+        <p>ราคา: {{ field.price_per_hour }} บาท/ชั่วโมง</p>
+        <a href="{{ url_for('main.book_field', field_id=field.id) }}"
+   class="booking-btn">จองสนามนี้</a>
+    </div>
+    {% else %}
+    <p>ขณะนี้ไม่มีสนามเปิดให้บริการ</p>
+    {% endfor %}
+</div>
+{% endblock %}

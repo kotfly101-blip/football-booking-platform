@@ -1,0 +1,161 @@
+
+{% extends "base.html" %}
+
+{% block title %}จัดการการจอง{% endblock %}
+
+{% block content %}
+
+<h1>จัดการการจองสนามฟุตบอล</h1>
+
+<div style="overflow-x: auto;">
+<table border="1" cellpadding="10" cellspacing="0">
+    <thead>
+        <tr>
+            <th>เลขที่</th>
+            <th>ผู้จอง</th>
+            <th>สนาม</th>
+            <th>วันที่</th>
+            <th>เวลา</th>
+            <th>ราคา</th>
+            <th>สถานะการจอง</th>
+            <th>สถานะชำระเงิน</th>
+            <th>รับชำระเงิน</th>
+            <th>จัดการ</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for booking in bookings %}
+        {% set payment = payments.get(booking.id) %}
+
+        <tr>
+            <td>{{ booking.id }}</td>
+            <td>{{ booking.customer_name }}</td>
+            <td>{{ booking.field.name }}</td>
+            <td>{{ booking.booking_date.strftime('%d/%m/%Y') }}</td>
+
+            <td>
+                {{ booking.start_time.strftime('%H:%M') }}
+                -
+                {{ booking.end_time.strftime('%H:%M') }}
+            </td>
+
+            <td>{{ "{:,.0f}".format(booking.total_price) }} บาท</td>
+
+            <td>
+                {% if booking.status == 'confirmed' %}
+                    ยืนยันแล้ว
+                {% elif booking.status == 'cancelled' %}
+                    ยกเลิกแล้ว
+                {% elif booking.status == 'pending' %}
+                    รอยืนยัน
+                {% else %}
+                    {{ booking.status }}
+                {% endif %}
+            </td>
+
+            <td>
+                {% if payment and payment.status == 'paid' %}
+                    ชำระแล้ว
+                    ({{ "{:,.0f}".format(payment.amount) }} บาท)
+                {% elif payment %}
+                    {{ payment.status }}
+                {% else %}
+                    ยังไม่ชำระ
+                {% endif %}
+            </td>
+
+            <td>
+                {% if booking.status == 'confirmed' and not payment %}
+                    <form method="POST"
+                          action="{{ url_for('main.admin_record_payment', booking_id=booking.id) }}"
+                          style="margin-bottom: 6px;">
+
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <input type="hidden" name="method" value="cash">
+
+                        <button type="submit"
+                                onclick="return confirm('ยืนยันว่าได้รับเงินสดแล้ว?')">
+                            รับเงินสด
+                        </button>
+                    </form>
+
+                    <form method="POST"
+                          action="{{ url_for('main.admin_record_payment', booking_id=booking.id) }}">
+
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <input type="hidden" name="method" value="bank_transfer">
+
+                        <button type="submit"
+                                onclick="return confirm('ตรวจสอบยอดเงินเข้าบัญชีแล้ว และยืนยันรับเงินโอน?')">
+                            รับเงินโอน
+                        </button>
+                    </form>
+
+
+{% elif payment and payment.status == 'paid' %}
+    <span>บันทึกแล้ว</span>
+
+    <div style="margin-top: 8px;">
+        <a href="{{ url_for('main.view_receipt', booking_id=booking.id) }}"
+           target="_blank"
+           rel="noopener noreferrer">
+            ดูใบเสร็จ
+        </a>
+    </div>
+
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+
+            <td>
+                {% if booking.status == 'cancelled' %}
+                    ยกเลิกแล้ว
+
+                {% elif booking.booking_date < today or
+                    (booking.booking_date == today and booking.start_time <= now_time) %}
+                    เริ่มไปแล้ว
+
+                {% elif booking.status in ['confirmed', 'pending'] %}
+
+                    {% if payment and payment.status == 'paid' %}
+                        ชำระแล้ว ไม่สามารถยกเลิกได้
+                    {% else %}
+                        <form method="POST"
+                              action="{{ url_for('main.admin_update_booking_status', booking_id=booking.id) }}">
+
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                            {% if booking.status == 'confirmed' %}
+                                <input type="hidden" name="status" value="cancelled">
+                                <button type="submit"
+                                        onclick="return confirm('ยืนยันการยกเลิกการจอง?')">
+                                    ยกเลิก
+                                </button>
+                            {% else %}
+                                <input type="hidden" name="status" value="confirmed">
+                                <button type="submit"
+                                        onclick="return confirm('ต้องการยืนยันการจองหรือไม่?')">
+                                    ยืนยัน
+                                </button>
+                            {% endif %}
+                        </form>
+                    {% endif %}
+
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+
+    {% else %}
+        <tr>
+            <td colspan="10">ยังไม่มีรายการจอง</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+
+{% extends "base.html" %}
+
+{% block title %}จองสนามสำเร็จ{% endblock %}
+
+{% block content %}
+<h1>บันทึกการจองสำเร็จ</h1>
+
+<p>เลขที่การจอง: {{ booking.id }}</p>
+<p>สนาม: {{ booking.field.name }}</p>
+<p>ผู้จอง: {{ booking.customer_name }}</p>
+<p>วันที่: {{ booking.booking_date }}</p>
+<p>เวลา: {{ booking.start_time }} - {{ booking.end_time }}</p>
+<h2>ยอดรวม: {{ booking.total_price }} บาท</h2>
+
+<a href="{{ url_for('main.fields') }}" class="booking-btn">
+    กลับไปหน้าสนามฟุตบอล
+</a>
+{% endblock %}

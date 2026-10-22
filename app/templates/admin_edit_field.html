@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}แก้ไขสนาม{% endblock %}
+{% block content %}
+<h1>แก้ไขสนาม #{{ field.id }}</h1>
+<form method="post">
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<p><label>ชื่อสนาม <input name="name" maxlength="100" required value="{{ field.name }}"></label></p>
+<p><label>ประเภทสนาม <input name="field_type" maxlength="50" required value="{{ field.field_type }}"></label></p>
+<p><label>ราคาต่อชั่วโมง (บาท) <input name="price_per_hour" type="number" min="1" max="1000000" required value="{{ field.price_per_hour }}"></label></p>
+<p><label><input name="is_active" type="checkbox" {% if field.is_active %}checked{% endif %}> เปิดให้จอง</label></p>
+<button type="submit">บันทึกการแก้ไข</button> <a href="{{ url_for('main.admin_fields') }}">ยกเลิก</a>
+</form>
+{% endblock %}

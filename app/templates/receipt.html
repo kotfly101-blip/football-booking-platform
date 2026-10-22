@@ -1,0 +1,187 @@
+
+{% extends "base.html" %}
+
+{% block title %}ใบเสร็จรับเงิน{% endblock %}
+
+{% block content %}
+
+<style>
+    .receipt {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 35px;
+        background: white;
+        color: #222;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    .receipt-header {
+        text-align: center;
+        border-bottom: 2px solid #222;
+        padding-bottom: 20px;
+        margin-bottom: 25px;
+    }
+
+    .receipt-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .receipt-table th,
+    .receipt-table td {
+        border: 1px solid #ccc;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .receipt-total {
+        text-align: right;
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 25px;
+    }
+
+    .receipt-actions {
+        text-align: center;
+        margin: 25px 0;
+    }
+
+    .receipt-actions button {
+        padding: 12px 25px;
+        cursor: pointer;
+    }
+
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+
+    @media print {
+        body {
+            background: white !important;
+        }
+
+        header,
+        .receipt-actions,
+        .flash-message {
+            display: none !important;
+        }
+
+        main {
+            max-width: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .receipt {
+            max-width: none;
+            margin: 0;
+            padding: 0;
+            border: none;
+            border-radius: 0;
+        }
+    }
+</style>
+
+<div class="receipt">
+
+    <div class="receipt-header">
+        <h1>⚽ Football Booking Platform</h1>
+        <h2>ใบเสร็จรับเงิน</h2>
+        <p>RECEIPT</p>
+    </div>
+
+    <p>
+        <strong>เลขที่ใบเสร็จ:</strong>
+        RCP-{{ "%06d"|format(payment.id) }}
+    </p>
+
+    <p>
+        <strong>เลขที่การจอง:</strong>
+        {{ booking.id }}
+    </p>
+
+    <p>
+        <strong>ชื่อลูกค้า:</strong>
+        {{ booking.customer_name }}
+    </p>
+
+    <p>
+        <strong>วันที่ชำระเงิน:</strong>
+        {% if payment.paid_at %}
+            {{ payment.paid_at.strftime('%d/%m/%Y %H:%M') }}
+        {% else %}
+            -
+        {% endif %}
+    </p>
+
+    <table class="receipt-table">
+        <thead>
+            <tr>
+                <th>รายละเอียด</th>
+                <th>ข้อมูล</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>สนามฟุตบอล</td>
+                <td>{{ booking.field.name }}</td>
+            </tr>
+
+            <tr>
+                <td>วันที่ใช้สนาม</td>
+                <td>
+                    {{ booking.booking_date.strftime('%d/%m/%Y') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>เวลาใช้สนาม</td>
+                <td>
+                    {{ booking.start_time.strftime('%H:%M') }}
+                    -
+                    {{ booking.end_time.strftime('%H:%M') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>วิธีชำระเงิน</td>
+                <td>
+                    {% if payment.method == 'cash' %}
+                        เงินสด
+                    {% elif payment.method == 'bank_transfer' %}
+                        เงินโอน
+                    {% else %}
+                        {{ payment.method or '-' }}
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <td>สถานะ</td>
+                <td>ชำระแล้ว</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="receipt-total">
+        ยอดชำระทั้งหมด:
+        {{ "{:,.2f}".format(payment.amount) }} บาท
+    </div>
+
+    <p style="text-align:center; margin-top:35px;">
+        ขอบคุณที่ใช้บริการ
+    </p>
+
+</div>
+
+<div class="receipt-actions">
+    <button type="button" onclick="window.print()">
+        พิมพ์ใบเสร็จ / บันทึกเป็น PDF
+    </button>
+</div>
+
+{% endblock %}
