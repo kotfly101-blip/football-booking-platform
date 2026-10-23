@@ -1,67 +1,83 @@
-
+﻿
 {% extends "base.html" %}
 
-{% block title %}หน้าแรก | Football Booking{% endblock %}
+{% block title %}หน้าแรก | Football Booking Platform{% endblock %}
 
 {% block content %}
 
-<section class="football-hero">
+<section class="home-hero">
     <div class="hero-content">
-        <span class="hero-tag">⚽ FOOTBALL BOOKING</span>
+        <span class="hero-label">⚽ FOOTBALL BOOKING PLATFORM</span>
 
-        <h1>สนามฟุตบอลที่ใช่<br>จองง่ายในไม่กี่คลิก</h1>
+        <h1>
+            จองสนามฟุตบอล<br>
+            <span>ง่าย สะดวก รวดเร็ว</span>
+        </h1>
 
         <p>
-            เลือกสนามที่ชอบ ตรวจสอบราคา
-            และจองเวลาเล่นฟุตบอลผ่านระบบออนไลน์
+            สนุกกับการเล่นฟุตบอลในสนามที่คุณเลือก
+            จองสนามล่วงหน้าได้ง่าย ๆ ผ่านเว็บไซต์
         </p>
 
-        <div class="hero-actions">
-            <a href="{{ url_for('main.fields') }}" class="hero-btn">
-                ⚽ จองสนามเลย
-            </a>
-
-            {% if not session.get('user_id') %}
-            <a href="{{ url_for('main.register') }}"
-               class="hero-btn-outline">
-                สมัครสมาชิก
-            </a>
-            {% endif %}
-        </div>
+        <a href="{{ url_for('main.fields') }}" class="hero-button">
+            ⚽ จองสนามเลย →
+        </a>
     </div>
+
+    <div class="hero-decoration">⚽</div>
 </section>
 
 <section class="home-services">
-    <div class="section-heading">
-        <span>OUR SERVICES</span>
-        <h2>บริการของเรา</h2>
-        <p>ครบทุกความต้องการสำหรับคนรักฟุตบอล</p>
-    </div>
+    <h2>บริการของเรา</h2>
+    <p class="section-subtitle">
+        ระบบจองสนามฟุตบอลและบริการสนามกีฬา
+    </p>
 
     <div class="service-grid">
         <div class="service-card">
             <div class="service-icon">🏟️</div>
             <h3>จองสนามฟุตบอล</h3>
-            <p>เลือกสนามและช่วงเวลาที่ต้องการได้สะดวก</p>
+            <p>เลือกสนามและเวลาที่ต้องการได้สะดวก</p>
+            <a href="{{ url_for('main.fields') }}">เลือกสนาม →</a>
         </div>
 
         <div class="service-card">
-            <div class="service-icon">👤</div>
+            <div class="service-icon">👥</div>
             <h3>ระบบสมาชิก</h3>
-            <p>สมัครสมาชิกและจัดการข้อมูลของคุณ</p>
+            <p>สมัครสมาชิกเพื่อจัดการข้อมูลการจอง</p>
+            <a href="{{ url_for('main.register') }}">สมัครสมาชิก →</a>
         </div>
 
         <div class="service-card">
             <div class="service-icon">📱</div>
             <h3>บริการ QR Code</h3>
             <p>แนวคิดบริการสั่งเครื่องดื่มผ่าน QR Code</p>
+            <span class="coming-soon">อยู่ระหว่างพัฒนา</span>
         </div>
 
         <div class="service-card">
             <div class="service-icon">📋</div>
             <h3>ประวัติการจอง</h3>
             <p>ตรวจสอบรายการจองสนามของคุณ</p>
+            <a href="{{ url_for('main.my_bookings') }}">ดูการจอง →</a>
         </div>
+    </div>
+</section>
+
+<section class="fb-highlight" aria-label="จุดเด่นของระบบ">
+    <div>
+        <strong>🏟️ เลือกสนามได้สะดวก</strong>
+        <small>ดูรายการสนามและราคาก่อนจองได้ทันที</small>
+    </div>
+
+    <div>
+        <strong>📅 จัดการการจอง</strong>
+        <small>สมาชิกสามารถตรวจสอบประวัติการจองของตนเอง</small>
+    </div>
+
+    <div>
+        <strong>🧾 มีใบเสร็จรับเงิน</strong>
+        <small>สำหรับรายการที่ชำระเงินแล้ว สามารถสั่งพิมพ์หรือบันทึก PDF</small>
     </div>
 </section>
 

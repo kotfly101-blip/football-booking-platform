@@ -138,179 +138,238 @@ nav span { color:white; }
     margin: 0;
 }
 
-/* ===== Modern Football Cards ===== */
 
-.field-card {
-    position: relative;
-    overflow: hidden;
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 30px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+/* ===================================
+   FOOTBALL BOOKING - GREEN THEME
+   =================================== */
+
+:root {
+    --green-dark: #064e3b;
+    --green-main: #15803d;
+    --green-bright: #16a34a;
+    --green-light: #dcfce7;
+    --gold: #fbbf24;
+    --text-dark: #172b22;
 }
 
-.field-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 7px;
-    background: linear-gradient(90deg, #16a34a, #84cc16);
+/* พื้นหลังเว็บไซต์ */
+body {
+    background: #f0f7f1;
+    color: var(--text-dark);
+}
+
+/* แถบเมนู */
+header {
+    background: linear-gradient(
+        120deg,
+        #052e16,
+        #166534
+    );
+    border-bottom: 3px solid var(--gold);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.logo {
+    color: white;
+}
+
+nav a {
+    transition: color 0.2s ease;
+}
+
+nav a:hover {
+    color: var(--gold);
+}
+
+/* หัวข้อ */
+h1, h2, h3 {
+    color: var(--green-dark);
+}
+
+/* การ์ดสนาม */
+.field-card {
+    border: 1px solid #d1e7d5;
+    border-top: 5px solid var(--green-main);
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
 }
 
 .field-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.16);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(6, 78, 59, 0.15);
 }
 
 .field-card h2 {
-    color: #10243a;
-    font-size: 30px;
-    margin-bottom: 18px;
+    color: var(--green-dark);
 }
 
-.field-card p {
-    color: #475569;
-    line-height: 1.7;
-}
-
+/* ปุ่มจองสนาม */
 .booking-btn {
-    display: inline-block;
-    background: linear-gradient(135deg, #16a34a, #15803d);
-    color: #ffffff;
-    padding: 13px 24px;
-    border-radius: 10px;
+    background: linear-gradient(
+        135deg,
+        #16a34a,
+        #15803d
+    );
+    color: white;
     font-weight: bold;
-    text-decoration: none;
-    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.22);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    transition: background 0.2s ease,
+                transform 0.2s ease;
 }
 
 .booking-btn:hover {
-    background: linear-gradient(135deg, #15803d, #166534);
+    background: #166534;
     transform: translateY(-2px);
-    box-shadow: 0 7px 16px rgba(22, 163, 74, 0.3);
 }
 
-.booking-btn:focus-visible {
-    outline: 3px solid #f59e0b;
-    outline-offset: 3px;
+/* การ์ดสถิติ */
+.stat-card {
+    border-left: 5px solid var(--green-main);
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .field-card,
-    .booking-btn {
-        transition: none;
-    }
-    .field-card:hover,
-    .booking-btn:hover {
-        transform: none;
-    }
+.stat-card p {
+    color: var(--green-main);
 }
 
-
-/* ===== FOOTBALL HOME PAGE ===== */
-
-.football-hero {
-    position: relative;
-    min-height: 420px;
-    display: flex;
-    align-items: center;
-    padding: 55px 45px;
-    margin: 15px 0 55px;
-    border-radius: 24px;
+/* ตาราง */
+.history-table {
+    border-radius: 10px;
     overflow: hidden;
-    color: #ffffff;
+}
+
+.history-table th {
+    background: var(--green-dark);
+    color: white;
+}
+
+.history-table tr:nth-child(even) {
+    background: #f0fdf4;
+}
+
+.history-table tr:hover {
+    background: var(--green-light);
+}
+
+/* รองรับหน้าจอมือถือ */
+@media (max-width: 768px) {
+    header {
+        padding: 16px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav {
+        justify-content: center;
+        gap: 12px;
+    }
+
+    main {
+        margin: 24px auto;
+        padding: 0 15px;
+    }
+
+    h2 {
+        font-size: 26px;
+    }
+}
+
+
+/* =====================================
+   HOME PAGE - FOOTBALL GREEN DESIGN
+   ===================================== */
+
+.home-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 340px;
+    padding: 55px 45px;
+    border-radius: 20px;
     background:
-        radial-gradient(circle at 85% 15%, rgba(132,204,22,.35), transparent 35%),
-        linear-gradient(125deg, #0f172a, #14532d 70%, #15803d);
+        radial-gradient(circle at 85% 80%,
+            rgba(74, 222, 128, 0.35), transparent 38%),
+        linear-gradient(125deg, #052e16, #166534 65%, #15803d);
+    color: white;
+    box-shadow: 0 12px 30px rgba(6, 78, 59, 0.2);
 }
 
 .hero-content {
     position: relative;
     z-index: 1;
-    max-width: 650px;
+    max-width: 620px;
 }
 
-.hero-tag {
+.hero-label {
     display: inline-block;
-    color: #bef264;
+    padding: 7px 14px;
+    background: rgba(255, 255, 255, 0.13);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    font-size: 13px;
     font-weight: bold;
-    letter-spacing: 2px;
-    margin-bottom: 18px;
+    letter-spacing: 1px;
 }
 
-.football-hero h1 {
-    color: #ffffff;
-    font-size: clamp(32px, 5vw, 56px);
-    line-height: 1.2;
-    margin: 0 0 20px;
+.home-hero h1 {
+    margin: 22px 0 15px;
+    color: white;
+    font-size: clamp(32px, 4vw, 50px);
+    line-height: 1.25;
 }
 
-.football-hero p {
-    color: #e2e8f0;
-    font-size: 18px;
+.home-hero h1 span {
+    color: #86efac;
+}
+
+.home-hero p {
+    max-width: 500px;
     line-height: 1.8;
+    font-size: 17px;
+    color: #ecfdf5;
 }
 
-.hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-    margin-top: 28px;
-}
-
-.hero-btn,
-.hero-btn-outline {
+.hero-button {
     display: inline-block;
-    padding: 14px 26px;
-    border-radius: 12px;
+    margin-top: 18px;
+    padding: 15px 26px;
+    background: #fbbf24;
+    color: #172b22;
     font-weight: bold;
     text-decoration: none;
-    transition: transform .2s ease;
+    border-radius: 12px;
+    transition: transform 0.2s, background 0.2s;
 }
 
-.hero-btn {
-    background: #facc15;
-    color: #172554;
-}
-
-.hero-btn-outline {
-    color: #ffffff;
-    border: 2px solid rgba(255,255,255,.7);
-}
-
-.hero-btn:hover,
-.hero-btn-outline:hover {
+.hero-button:hover {
+    background: #fcd34d;
     transform: translateY(-3px);
 }
 
+.hero-decoration {
+    position: absolute;
+    right: 55px;
+    top: 70px;
+    font-size: 140px;
+    opacity: 0.65;
+    transform: rotate(-15deg);
+}
+
+/* Services */
+
 .home-services {
-    padding-bottom: 55px;
+    margin-top: 45px;
 }
 
-.section-heading {
-    text-align: center;
-    margin-bottom: 30px;
+.home-services h2 {
+    color: #064e3b;
+    margin-bottom: 8px;
 }
 
-.section-heading span {
-    color: #15803d;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-
-.section-heading h2 {
-    font-size: 34px;
-    color: #10243a;
-    margin: 10px 0;
-}
-
-.section-heading p {
+.section-subtitle {
     color: #64748b;
+    margin-bottom: 25px;
 }
 
 .service-grid {
@@ -320,33 +379,57 @@ nav span { color:white; }
 }
 
 .service-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 18px;
-    padding: 28px 22px;
-    box-shadow: 0 8px 20px rgba(15,23,42,.06);
-    transition: transform .2s ease;
+    background: white;
+    padding: 25px 20px;
+    border-radius: 16px;
+    border: 1px solid #d1e7d5;
+    box-shadow: 0 5px 18px rgba(6, 78, 59, 0.07);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .service-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(6, 78, 59, 0.14);
 }
 
 .service-icon {
-    font-size: 38px;
-    margin-bottom: 16px;
+    font-size: 35px;
+    margin-bottom: 15px;
 }
 
 .service-card h3 {
-    color: #10243a;
     margin: 0 0 12px;
+    font-size: 19px;
+    color: #064e3b;
 }
 
 .service-card p {
     color: #64748b;
     line-height: 1.7;
-    margin: 0;
+    min-height: 75px;
 }
+
+.service-card a {
+    color: #15803d;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.service-card a:hover {
+    text-decoration: underline;
+}
+
+.coming-soon {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #fef3c7;
+    color: #92400e;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* Responsive */
 
 @media (max-width: 900px) {
     .service-grid {
@@ -355,27 +438,432 @@ nav span { color:white; }
 }
 
 @media (max-width: 600px) {
-    .football-hero {
-        padding: 38px 24px;
-        min-height: 360px;
-        border-radius: 16px;
+    .home-hero {
+        padding: 35px 25px;
+    }
+
+    .hero-decoration {
+        right: 10px;
+        top: 20px;
+        font-size: 75px;
+        opacity: 0.2;
     }
 
     .service-grid {
         grid-template-columns: 1fr;
     }
+
+    .service-card p {
+        min-height: auto;
+    }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .hero-btn,
-    .hero-btn-outline,
-    .service-card {
-        transition: none;
-    }
 
-    .hero-btn:hover,
-    .hero-btn-outline:hover,
-    .service-card:hover {
-        transform: none;
+/* FOOTBALL FIELD BACKGROUND */
+
+body {
+    background-color: #e7f5e9;
+    background-image:
+        radial-gradient(
+            circle at 8% 20%,
+            rgba(34, 197, 94, 0.18),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 92% 75%,
+            rgba(22, 163, 74, 0.2),
+            transparent 35%
+        ),
+        repeating-linear-gradient(
+            90deg,
+            rgba(22, 101, 52, 0.035) 0px,
+            rgba(22, 101, 52, 0.035) 110px,
+            transparent 110px,
+            transparent 220px
+        );
+    background-attachment: fixed;
+}
+
+/* เพิ่มความโดดเด่นให้ส่วนบริการ */
+
+.home-services {
+    padding: 30px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(22, 163, 74, 0.15);
+    box-shadow: 0 12px 30px rgba(6, 78, 59, 0.08);
+}
+
+.service-card {
+    border-bottom: 5px solid #16a34a;
+}
+
+.service-card:nth-child(2) {
+    border-bottom-color: #2563eb;
+}
+
+.service-card:nth-child(3) {
+    border-bottom-color: #f59e0b;
+}
+
+.service-card:nth-child(4) {
+    border-bottom-color: #8b5cf6;
+}
+
+/* เพิ่มสีสันหัวข้อ */
+
+.home-services h2 {
+    border-left: 6px solid #16a34a;
+    padding-left: 15px;
+}
+
+@media (max-width: 600px) {
+    .home-services {
+        padding: 18px;
     }
+}
+
+
+/* ===== Football Booking 2026 | site-wide visual upgrade ===== */
+:root{--fb-dark:#063a2c;--fb-green:#087d4b;--fb-lime:#20ce79;--fb-gold:#ffd13c;--fb-ink:#12372b;--fb-shadow:0 12px 35px rgba(4,76,46,.12)}
+html{scroll-behavior:smooth}body{color:var(--fb-ink);background:linear-gradient(135deg,rgba(232,255,241,.92),rgba(223,246,231,.88)),url('../images/football-stadium.png') center/cover fixed!important;min-height:100vh}
+header{background:linear-gradient(110deg,#022e24,#006e46 72%,#098954)!important;box-shadow:0 5px 22px rgba(0,43,24,.22);position:relative;z-index:3}
+.navbar{max-width:1250px!important;gap:18px;flex-wrap:wrap}.logo{color:white;font-weight:900!important;text-shadow:0 2px 6px #003b24}nav{display:flex;flex-wrap:wrap;align-items:center;gap:10px!important}nav a{padding:9px 12px;border-radius:9px;transition:.2s}nav a:hover{background:rgba(255,255,255,.17);text-decoration:none!important}nav span{color:#d7ffea}nav form{margin:0}nav button{background:#ffe16b!important;color:#173b29!important;padding:9px 14px!important}
+main{max-width:1250px!important;min-height:calc(100vh - 175px);padding:24px 22px 48px!important}main>h1,main>h2{color:#064a35;text-shadow:0 1px 0 #fff}main>h1{border-left:7px solid #f2b900;padding-left:15px}main>p{line-height:1.65}
+main>form,main>table,main>section:not(.home-hero),main>div:not(.home-hero),.field-card,.stat-card,.service-card{box-shadow:var(--fb-shadow)}
+main>form{background:rgba(255,255,255,.94);padding:24px;border-radius:18px;border:1px solid #bce8cd}input:not([type=checkbox]):not([type=radio]):not([type=hidden]),select,textarea{max-width:100%;border:1px solid #a7d6b9;border-radius:9px;padding:10px 12px;background:#fff}input:focus,select:focus,textarea:focus{outline:2px solid #28b976;outline-offset:1px}
+button,.booking-btn,.hero-button,input[type=submit]{border-radius:10px!important;transition:transform .18s,box-shadow .18s;cursor:pointer}button:hover,.booking-btn:hover,.hero-button:hover,input[type=submit]:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,99,53,.2)}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:13px;overflow:hidden}table th{background:#096c48!important;color:#fff!important;padding:12px!important}table td{padding:11px!important;border-bottom:1px solid #d9eee1}table tr:nth-child(even){background:#effaf2}table tr:hover td{background:#e2f7e9}
+.field-grid{gap:20px}.field-card{background:#fff!important;overflow:hidden;border:1px solid #c7e8d3;border-radius:18px!important;padding-bottom:20px}.field-card::before{content:'';display:block;height:150px;background:linear-gradient(0deg,rgba(0,70,36,.28),rgba(0,40,27,.05)),url('../images/football-stadium.png') center 61%/cover}.field-card h2,.field-card p,.field-card a{margin-left:18px;margin-right:18px}.field-card h2{color:#07543a}.field-card .booking-btn{display:inline-block;background:#048850;color:white;padding:11px 20px;text-decoration:none}
+.stat-card{border:1px solid #b9e5cb;border-radius:17px!important;background:linear-gradient(140deg,#fff,#e8fff0)!important;border-top:5px solid #0c9b60}.stat-card:nth-child(2n){border-top-color:#edb700}.stat-card:nth-child(3n){border-top-color:#1679c5}.stat-card p{color:#086840;font-weight:800}
+.home-hero{background:linear-gradient(90deg,rgba(0,41,28,.96) 0%,rgba(0,68,44,.79) 50%,rgba(0,64,42,.14) 100%),url('../images/football-stadium.png') center/cover!important;min-height:390px!important;display:flex;align-items:center;border:2px solid rgba(190,255,202,.4);box-shadow:0 20px 44px rgba(0,48,32,.26);position:relative;overflow:hidden}.home-hero h1{font-size:clamp(2rem,4.5vw,3.7rem);line-height:1.16}.home-hero h1 span{color:#69ffb5}.home-hero p{max-width:520px;color:#ecfff5}.hero-decoration{display:none!important}.hero-button{background:linear-gradient(120deg,#ffe66b,#ffb900)!important;color:#143b2b!important;font-weight:800!important;box-shadow:0 9px 24px rgba(0,0,0,.22)}
+.home-services{background:rgba(255,255,255,.92)!important;backdrop-filter:blur(9px);border:1px solid #b9e6cc!important}.service-card{background:linear-gradient(160deg,#fff,#f0fff5)!important;border:1px solid #c9e9d5;transition:transform .2s}.service-card:hover{transform:translateY(-5px)}.service-icon{font-size:2.3rem}.service-card a{font-weight:700;color:#087849}
+.fb-highlight{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:22px 0}.fb-highlight>div{padding:20px;background:linear-gradient(135deg,#075b3e,#08935a);border:1px solid #46c58a;border-radius:16px;color:white;box-shadow:var(--fb-shadow)}.fb-highlight strong{display:block;font-size:1.1rem;margin-bottom:5px}.fb-highlight small{color:#d6ffea}.fb-footer{background:linear-gradient(120deg,#022e25,#075c3f);color:#e8fff3;text-align:center;padding:23px 15px;margin-top:10px;font-size:.9rem}.fb-footer a{color:#ffdc65}
+.receipt{background:#fff!important;box-shadow:0 18px 45px rgba(0,51,35,.18)!important;border:1px solid #9ed4b5!important;border-radius:20px!important;overflow:hidden}.receipt-header{background:linear-gradient(120deg,#053d2d,#07905c)!important;color:#fff!important;padding:25px 18px!important;border-bottom:7px solid #f6cb37!important;margin:-35px -35px 28px!important}.receipt-header h1,.receipt-header h2,.receipt-header p{color:#fff!important;margin:7px}.receipt-table th{background:#0a754d!important}.receipt-total{background:#e7fff0;color:#035b39;border-left:6px solid #08a666;padding:18px!important;border-radius:12px}.receipt-actions button{background:#087d4b;color:#fff;border:0;font-weight:700}.receipt>p{line-height:1.9}
+@media(max-width:850px){.fb-highlight{grid-template-columns:1fr}.home-hero{min-height:310px!important}.service-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:550px){main{padding:16px 10px 35px!important}.home-hero{padding:20px!important}.service-grid{grid-template-columns:1fr!important}nav{gap:4px!important}nav a{font-size:.86rem;padding:7px!important}main>table{display:block;overflow-x:auto}.receipt{padding:22px!important}.receipt-header{margin:-22px -22px 22px!important}}
+@page{size:A4;margin:14mm}
+@media print{header,.fb-footer,.receipt-actions{display:none!important}body{background:#fff!important}main{padding:0!important;max-width:none!important}.receipt{box-shadow:none!important;border:1px solid #b5c9bc!important;break-inside:avoid}.receipt-header{print-color-adjust:exact;-webkit-print-color-adjust:exact}.receipt-table th,.receipt-total{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+
+/* Stadium Hero Background */
+.home-hero {
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(0, 35, 24, 0.92) 0%,
+            rgba(0, 55, 35, 0.65) 48%,
+            rgba(0, 35, 24, 0.10) 100%
+        ),
+        url("../images/football-stadium.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 460px;
+}
+
+.home-hero .hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.home-hero h1,
+.home-hero p {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* VIBRANT FOOTBALL STADIUM THEME */
+
+body {
+    background-image:
+        linear-gradient(
+            rgba(230, 255, 235, 0.58),
+            rgba(205, 245, 215, 0.58)
+        ),
+        url("../images/football-stadium.png");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* ภาพสนามในแบนเนอร์ */
+.home-hero {
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(0, 30, 20, 0.82) 0%,
+            rgba(0, 45, 25, 0.46) 48%,
+            rgba(0, 35, 20, 0.04) 100%
+        ),
+        url("../images/football-stadium.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* เพิ่มความเด่นให้การ์ด */
+.home-services {
+    background: rgba(255, 255, 255, 0.90);
+    box-shadow: 0 15px 35px rgba(0, 55, 25, 0.18);
+}
+
+.service-card {
+    background: #ffffff;
+    box-shadow: 0 8px 22px rgba(0, 70, 35, 0.14);
+}
+
+/* ===== FOOTBALL VIBRANT BACKGROUND V2 ===== */
+
+/* พื้นหลังเว็บไซต์: ลดชั้นสีขาวที่ทำให้รูปจาง */
+html body {
+    background:
+        linear-gradient(
+            rgba(0, 45, 25, 0.12),
+            rgba(0, 70, 35, 0.18)
+        ),
+        url("../images/football-stadium.png") center center / cover fixed no-repeat !important;
+}
+
+/* แบนเนอร์: เห็นสนามชัดขึ้น */
+.home-hero {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 25, 18, 0.78) 0%,
+            rgba(0, 40, 25, 0.28) 52%,
+            rgba(0, 30, 20, 0.02) 100%
+        ),
+        url("../images/football-stadium.png") center center / cover no-repeat !important;
+
+    border: 2px solid rgba(74, 222, 128, 0.65);
+    box-shadow: 0 18px 45px rgba(0, 35, 20, 0.35);
+}
+
+/* ให้ข้อความอ่านง่าย */
+.home-hero h1,
+.home-hero p {
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.65);
+}
+
+/* การ์ดบริการเด่นขึ้น */
+.home-services {
+    background: rgba(255, 255, 255, 0.94) !important;
+    border: 2px solid rgba(34, 197, 94, 0.45);
+    box-shadow: 0 15px 40px rgba(0, 40, 20, 0.25);
+}
+
+/* ADMIN PAGE HEADING */
+h1, h2 {
+    color: #ffffff;
+    background: linear-gradient(90deg, #064e3b, #047857);
+    padding: 15px 22px;
+    border-left: 6px solid #facc15;
+    border-radius: 10px;
+    font-weight: 800;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    margin-bottom: 20px;
+}
+
+/* หัวข้อหน้าจัดการการจอง */
+.admin-page-title {
+    color: #ffffff;
+    background: linear-gradient(90deg, #064e3b, #047857);
+    padding: 16px 24px;
+    border-left: 6px solid #facc15;
+    border-radius: 10px;
+    font-size: 28px;
+    font-weight: 800;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+    margin-bottom: 20px;
+}
+
+/* เพิ่มความชัดเจนให้หัวข้อ Admin */
+h1.admin-page-title {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.45) !important;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+/* หัวข้อ Admin สีกรมท่าตัดกับพื้นสนาม */
+h1.admin-page-title {
+    background: linear-gradient(110deg, #101f40, #244a83) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border-left: 7px solid #facc15 !important;
+    border-radius: 12px;
+    padding: 20px 26px;
+    font-size: 28px;
+    font-weight: 800;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* ADMIN BOOKINGS TITLE - NAVY AND GOLD */
+
+main h1.admin-page-title {
+    background: linear-gradient(110deg, #101f40, #244a83) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    -webkit-text-stroke: 0 !important;
+    text-shadow: none !important;
+
+    border: 2px solid #facc15 !important;
+    border-left: 8px solid #facc15 !important;
+    border-radius: 12px;
+
+    padding: 18px 24px;
+    font-size: 28px;
+    font-weight: 800;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== REVENUE REPORT: NAVY & GOLD ===== */
+
+/* หัวข้อและยอดรวมของหน้ารายงาน */
+body:has(a[href*="/admin"]) main > h1,
+body:has(a[href*="/admin"]) main > h2 {
+    background: linear-gradient(110deg, #101f40, #244a83) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    -webkit-text-stroke: 0 !important;
+    text-shadow: none !important;
+
+    border: 2px solid #facc15 !important;
+    border-left: 7px solid #facc15 !important;
+    border-radius: 12px;
+    padding: 18px 24px;
+    font-weight: 800;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* ข้อความอธิบายใต้หัวข้อ */
+body:has(a[href*="/admin"]) main > p {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: rgba(10, 30, 55, 0.85);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* ลิงก์กลับหน้า Admin */
+body:has(a[href*="/admin"]) main > a {
+    display: inline-block;
+    background: #facc15;
+    color: #14213d !important;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+
+/* ===== GLOBAL READABILITY IMPROVEMENTS ===== */
+
+/* ข้อความทั่วไปบนพื้นหลังสนามฟุตบอล */
+main > p,
+main > small,
+main > label {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: rgba(5, 35, 28, 0.88);
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+
+/* หัวข้อหลักและหัวข้อรอง */
+main > h1,
+main > h2,
+main > h3 {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    -webkit-text-stroke: 0 !important;
+    background: linear-gradient(110deg, #064e3b, #047857) !important;
+    border-left: 5px solid #facc15;
+    border-radius: 8px;
+    padding: 14px 20px;
+    text-shadow: none !important;
+}
+
+/* ข้อความในการ์ดสรุปรายงาน */
+main .stats-grid,
+main .summary-grid,
+main .stat-card {
+    color: #ffffff;
+}
+
+main .stat-card,
+main .stats-grid > div,
+main .summary-grid > div {
+    background: rgba(5, 46, 36, 0.94) !important;
+    border: 1px solid #facc15;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+main .stat-card *,
+main .stats-grid > div *,
+main .summary-grid > div * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/* ตารางข้อมูล */
+main table {
+    background: #ffffff !important;
+    color: #172b25 !important;
+    border-collapse: collapse;
+}
+
+main table thead,
+main table th {
+    background: #065f46 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+main table tbody tr,
+main table td {
+    background: #ffffff;
+    color: #172b25 !important;
+    -webkit-text-fill-color: #172b25 !important;
+}
+
+main table tbody tr:nth-child(even) td {
+    background: #ecfdf5;
+}
+
+/* ลิงก์ที่อยู่บนพื้นหลังสนามฟุตบอล */
+main > a:not(.btn):not(.button) {
+    display: inline-block;
+    background: #facc15;
+    color: #172554 !important;
+    -webkit-text-fill-color: #172554 !important;
+    font-weight: 700;
+    padding: 9px 15px;
+    border-radius: 7px;
+    text-decoration: none;
+}
+
+/* ช่องกรอกข้อมูล */
+main input,
+main select,
+main textarea {
+    background: #ffffff;
+    color: #172b25;
+}
+
+/* เพิ่มความชัดเจนเมื่อเลือกหรือโฟกัส */
+main a:focus-visible,
+main button:focus-visible,
+main input:focus-visible {
+    outline: 3px solid #facc15;
+    outline-offset: 2px;
 }

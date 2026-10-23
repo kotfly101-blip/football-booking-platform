@@ -1,4 +1,4 @@
-
+﻿
 {% extends "base.html" %}
 
 {% block title %}รายงานการชำระเงิน{% endblock %}
@@ -11,17 +11,17 @@
 
     <div style="display:flex; gap:15px; flex-wrap:wrap; margin-bottom:25px;">
 
-        <div style="border:1px solid #ccc; padding:20px; border-radius:8px;">
+        <div class="payment-card" style="border:1px solid #ccc; padding:20px; border-radius:8px;">
             <h3>ยอดรับเงินสด</h3>
             <h2>{{ "{:,.0f}".format(total_cash) }} บาท</h2>
         </div>
 
-        <div style="border:1px solid #ccc; padding:20px; border-radius:8px;">
+        <div class="payment-card" style="border:1px solid #ccc; padding:20px; border-radius:8px;">
             <h3>ยอดรับเงินโอน</h3>
             <h2>{{ "{:,.0f}".format(total_transfer) }} บาท</h2>
         </div>
 
-        <div style="border:1px solid #ccc; padding:20px; border-radius:8px;">
+        <div class="payment-card" style="border:1px solid #ccc; padding:20px; border-radius:8px;">
             <h3>ยอดรับชำระรวม</h3>
             <h2>{{ "{:,.0f}".format(total_paid) }} บาท</h2>
         </div>
