@@ -893,3 +893,112 @@ main .service-card h3 {
     color: #172b25 !important;
     -webkit-text-fill-color: #172b25 !important;
 }
+
+/* ===== SERVICE CARD CONTRAST FIX ===== */
+
+/* หัวข้อบนแถบสีเขียวของการ์ด */
+main .service-card h3,
+main .service-card h2 {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/* ข้อความอธิบายบนพื้นการ์ดสีอ่อน */
+main .service-card p,
+main .service-card small {
+    color: #172b25 !important;
+    -webkit-text-fill-color: #172b25 !important;
+}
+
+/* ===== HOME PAGE: HIGH CONTRAST DESIGN ===== */
+
+/* หัวข้อบริการ */
+.home-services > h2 {
+    background: #064e3b !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+.home-services .section-subtitle {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+}
+
+/* พื้นการ์ดและข้อความทั่วไป */
+.home-services .service-card {
+    background: #f0fdf4 !important;
+    color: #172b25 !important;
+}
+
+.home-services .service-card p {
+    color: #172b25 !important;
+    -webkit-text-fill-color: #172b25 !important;
+}
+
+/* หัวข้อการ์ด: สีพื้นและตัวอักษรตัดกัน */
+.home-services .service-card h3 {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: #065f46 !important;
+    padding: 10px 12px;
+    border-left: 4px solid #facc15;
+    border-radius: 6px;
+}
+
+/* การ์ดสมาชิก: น้ำเงิน */
+.home-services .service-card:nth-child(2) {
+    background: #eff6ff !important;
+}
+
+.home-services .service-card:nth-child(2) h3 {
+    background: #1d4ed8 !important;
+}
+
+/* การ์ด QR Code: เหลือง */
+.home-services .service-card:nth-child(3) {
+    background: #fffbeb !important;
+}
+
+.home-services .service-card:nth-child(3) h3 {
+    background: #facc15 !important;
+    color: #111827 !important;
+    -webkit-text-fill-color: #111827 !important;
+}
+
+/* การ์ดประวัติ: แดง */
+.home-services .service-card:nth-child(4) {
+    background: #fff1f2 !important;
+}
+
+.home-services .service-card:nth-child(4) h3 {
+    background: #be123c !important;
+}
+
+/* ลิงก์ในการ์ด */
+.home-services .service-card a {
+    color: #065f46 !important;
+    -webkit-text-fill-color: #065f46 !important;
+    font-weight: 700;
+}
+
+.home-services .service-card:nth-child(2) a {
+    color: #1d4ed8 !important;
+    -webkit-text-fill-color: #1d4ed8 !important;
+}
+
+.home-services .service-card:nth-child(4) a {
+    color: #be123c !important;
+    -webkit-text-fill-color: #be123c !important;
+}
+
+/* แถบจุดเด่นด้านล่าง */
+.home-services + .fb-highlight > div {
+    background: #064e3b !important;
+    color: #ffffff !important;
+}
+
+.home-services + .fb-highlight strong,
+.home-services + .fb-highlight small {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
