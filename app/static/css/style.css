@@ -1078,3 +1078,56 @@ main table th {
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
 }
+
+/* ===== PAYMENT REPORT CONTRAST FIX ===== */
+
+/* คำอธิบายใต้หัวข้อ */
+main .container > p {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: #102a43;
+    padding: 12px 16px;
+    border-radius: 8px;
+    line-height: 1.7;
+}
+
+/* กล่องสรุปยอดเงินทั้งสามกล่อง */
+main .payment-card {
+    background: #ffffff !important;
+    border: 2px solid #047857 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+}
+
+/* ชื่อประเภทการรับเงิน */
+main .payment-card h3 {
+    background: transparent !important;
+    color: #172b25 !important;
+    -webkit-text-fill-color: #172b25 !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 16px !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    font-size: 18px;
+}
+
+/* ตัวเลขยอดเงิน */
+main .payment-card h2 {
+    display: inline-block;
+    background: #065f46 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    padding: 12px 18px !important;
+    border-left: 5px solid #facc15 !important;
+    border-radius: 9px;
+    margin: 0 !important;
+    font-size: 26px;
+}
+
+/* ลิงก์กลับหน้าจัดการการจอง */
+main .container > p a {
+    color: #facc15 !important;
+    -webkit-text-fill-color: #facc15 !important;
+    font-weight: 700;
+}
