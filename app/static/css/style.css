@@ -1002,3 +1002,79 @@ main .service-card small {
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
 }
+
+/* ===== FIX CONTRAST: FIELDS, BOOKINGS, PAYMENTS ===== */
+
+/* ชื่อสนาม A-E: พื้นเขียวเข้ม ตัวอักษรขาว */
+main .field-card h2 {
+    background: #065f46 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    padding: 14px 12px;
+    border-left: 5px solid #facc15;
+    border-radius: 8px;
+    text-shadow: none !important;
+}
+
+/* รายละเอียดสนาม: พื้นขาว ตัวอักษรเข้ม */
+main .field-card p {
+    color: #172b25 !important;
+    -webkit-text-fill-color: #172b25 !important;
+}
+
+/* คำอธิบายใต้หัวข้อหลักบนภาพสนาม */
+main > p {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    background: #102a43 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    padding: 12px 16px;
+    border-radius: 8px;
+}
+
+/* กล่องสรุปรายรับ: พื้นขาวทึบ */
+main .stat-card,
+main .stats-grid > div,
+main .summary-grid > div {
+    background: #ffffff !important;
+    color: #172b25 !important;
+    border: 2px solid #047857 !important;
+    border-radius: 12px;
+}
+
+/* หัวข้อภายในกล่องสรุป */
+main .stat-card h3,
+main .stats-grid > div h3,
+main .summary-grid > div h3 {
+    background: transparent !important;
+    color: #172b25 !important;
+    -webkit-text-fill-color: #172b25 !important;
+    border: 0 !important;
+    padding: 0;
+    text-shadow: none !important;
+}
+
+/* ตัวเลขรายรับ: พื้นเขียวเข้ม ตัวอักษรขาว */
+main .stat-card p {
+    display: inline-block;
+    background: #065f46 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    padding: 12px 16px;
+    border-left: 5px solid #facc15;
+    border-radius: 8px;
+}
+
+/* ป้องกันข้อความในตารางกลืนกับพื้นหลัง */
+main table td {
+    color: #172b25 !important;
+    -webkit-text-fill-color: #172b25 !important;
+}
+
+main table th {
+    background: #065f46 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
