@@ -1,23 +1,68 @@
-﻿{% extends "base.html" %}
 
-{% block title %}
-หน้าแรก | Football Booking Platform
-{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}หน้าแรก | Football Booking{% endblock %}
 
 {% block content %}
 
-<h2>ยินดีต้อนรับ</h2>
+<section class="football-hero">
+    <div class="hero-content">
+        <span class="hero-tag">⚽ FOOTBALL BOOKING</span>
 
-<p>ระบบจองสนามฟุตบอลและบริการสนามกีฬา</p>
+        <h1>สนามฟุตบอลที่ใช่<br>จองง่ายในไม่กี่คลิก</h1>
 
-<h3>บริการของเรา</h3>
+        <p>
+            เลือกสนามที่ชอบ ตรวจสอบราคา
+            และจองเวลาเล่นฟุตบอลผ่านระบบออนไลน์
+        </p>
 
-<ul>
-    <li>จองสนามฟุตบอล</li>
-    <li>สมัครสมาชิก</li>
-    <li>สั่งเครื่องดื่มผ่าน QR Code</li>
-    <li>ชำระเงิน</li>
-    <li>ตรวจสอบประวัติการจอง</li>
-</ul>
+        <div class="hero-actions">
+            <a href="{{ url_for('main.fields') }}" class="hero-btn">
+                ⚽ จองสนามเลย
+            </a>
+
+            {% if not session.get('user_id') %}
+            <a href="{{ url_for('main.register') }}"
+               class="hero-btn-outline">
+                สมัครสมาชิก
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="home-services">
+    <div class="section-heading">
+        <span>OUR SERVICES</span>
+        <h2>บริการของเรา</h2>
+        <p>ครบทุกความต้องการสำหรับคนรักฟุตบอล</p>
+    </div>
+
+    <div class="service-grid">
+        <div class="service-card">
+            <div class="service-icon">🏟️</div>
+            <h3>จองสนามฟุตบอล</h3>
+            <p>เลือกสนามและช่วงเวลาที่ต้องการได้สะดวก</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">👤</div>
+            <h3>ระบบสมาชิก</h3>
+            <p>สมัครสมาชิกและจัดการข้อมูลของคุณ</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">📱</div>
+            <h3>บริการ QR Code</h3>
+            <p>แนวคิดบริการสั่งเครื่องดื่มผ่าน QR Code</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">📋</div>
+            <h3>ประวัติการจอง</h3>
+            <p>ตรวจสอบรายการจองสนามของคุณ</p>
+        </div>
+    </div>
+</section>
 
 {% endblock %}

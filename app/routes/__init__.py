@@ -100,6 +100,45 @@ def login():
     return render_template('login.html', csrf_token=csrf_for('login_csrf'))
 
 
+@main.route('/admin/change-password', methods=['GET', 'POST'])
+def admin_change_password():
+    if not session.get('user_id'):
+        return redirect(url_for('main.login'))
+
+    user = db.session.get(User, session['user_id'])
+
+    if user is None or not user.is_admin:
+        abort(403)
+
+    if request.method == 'POST':
+        if not valid_csrf('admin_password_csrf'):
+            abort(400, 'คำขอไม่ถูกต้อง กรุณาโหลดหน้าใหม่')
+
+        current_password = request.form.get('current_password', '')
+        new_password = request.form.get('new_password', '')
+        confirm_password = request.form.get('confirm_password', '')
+
+        if not user.check_password(current_password):
+            flash('รหัสผ่านปัจจุบันไม่ถูกต้อง', 'error')
+        elif len(new_password) < 12:
+            flash('รหัสผ่านใหม่ต้องมีอย่างน้อย 12 ตัวอักษร', 'error')
+        elif new_password != confirm_password:
+            flash('รหัสผ่านใหม่ทั้งสองช่องไม่ตรงกัน', 'error')
+        elif user.check_password(new_password):
+            flash('กรุณาใช้รหัสผ่านใหม่ที่แตกต่างจากเดิม', 'error')
+        else:
+            user.set_password(new_password)
+            db.session.commit()
+            session.clear()
+            flash('เปลี่ยนรหัสผ่านสำเร็จ กรุณาเข้าสู่ระบบใหม่', 'success')
+            return redirect(url_for('main.login'))
+
+    return render_template(
+        'admin_change_password.html',
+        csrf_token=csrf_for('admin_password_csrf')
+    )
+
+
 @main.route('/logout', methods=['POST'])
 def logout():
     if not valid_csrf('logout_csrf_token'):
@@ -271,7 +310,7 @@ def admin_dashboard():
         cancelled_bookings=cancelled_bookings,
         confirmed_revenue=confirmed_revenue
     )
- 
+
 
 
 @main.route('/admin/bookings')

@@ -137,3 +137,245 @@ nav span { color:white; }
     color: #16a34a;
     margin: 0;
 }
+
+/* ===== Modern Football Cards ===== */
+
+.field-card {
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 30px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.field-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 7px;
+    background: linear-gradient(90deg, #16a34a, #84cc16);
+}
+
+.field-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.16);
+}
+
+.field-card h2 {
+    color: #10243a;
+    font-size: 30px;
+    margin-bottom: 18px;
+}
+
+.field-card p {
+    color: #475569;
+    line-height: 1.7;
+}
+
+.booking-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: #ffffff;
+    padding: 13px 24px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.22);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.booking-btn:hover {
+    background: linear-gradient(135deg, #15803d, #166534);
+    transform: translateY(-2px);
+    box-shadow: 0 7px 16px rgba(22, 163, 74, 0.3);
+}
+
+.booking-btn:focus-visible {
+    outline: 3px solid #f59e0b;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .field-card,
+    .booking-btn {
+        transition: none;
+    }
+    .field-card:hover,
+    .booking-btn:hover {
+        transform: none;
+    }
+}
+
+
+/* ===== FOOTBALL HOME PAGE ===== */
+
+.football-hero {
+    position: relative;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    padding: 55px 45px;
+    margin: 15px 0 55px;
+    border-radius: 24px;
+    overflow: hidden;
+    color: #ffffff;
+    background:
+        radial-gradient(circle at 85% 15%, rgba(132,204,22,.35), transparent 35%),
+        linear-gradient(125deg, #0f172a, #14532d 70%, #15803d);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 650px;
+}
+
+.hero-tag {
+    display: inline-block;
+    color: #bef264;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+}
+
+.football-hero h1 {
+    color: #ffffff;
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.2;
+    margin: 0 0 20px;
+}
+
+.football-hero p {
+    color: #e2e8f0;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 28px;
+}
+
+.hero-btn,
+.hero-btn-outline {
+    display: inline-block;
+    padding: 14px 26px;
+    border-radius: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: transform .2s ease;
+}
+
+.hero-btn {
+    background: #facc15;
+    color: #172554;
+}
+
+.hero-btn-outline {
+    color: #ffffff;
+    border: 2px solid rgba(255,255,255,.7);
+}
+
+.hero-btn:hover,
+.hero-btn-outline:hover {
+    transform: translateY(-3px);
+}
+
+.home-services {
+    padding-bottom: 55px;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.section-heading span {
+    color: #15803d;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.section-heading h2 {
+    font-size: 34px;
+    color: #10243a;
+    margin: 10px 0;
+}
+
+.section-heading p {
+    color: #64748b;
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.service-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 28px 22px;
+    box-shadow: 0 8px 20px rgba(15,23,42,.06);
+    transition: transform .2s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-icon {
+    font-size: 38px;
+    margin-bottom: 16px;
+}
+
+.service-card h3 {
+    color: #10243a;
+    margin: 0 0 12px;
+}
+
+.service-card p {
+    color: #64748b;
+    line-height: 1.7;
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .service-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .football-hero {
+        padding: 38px 24px;
+        min-height: 360px;
+        border-radius: 16px;
+    }
+
+    .service-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-btn,
+    .hero-btn-outline,
+    .service-card {
+        transition: none;
+    }
+
+    .hero-btn:hover,
+    .hero-btn-outline:hover,
+    .service-card:hover {
+        transform: none;
+    }
+}
