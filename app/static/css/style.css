@@ -867,3 +867,29 @@ main input:focus-visible {
     outline: 3px solid #facc15;
     outline-offset: 2px;
 }
+
+/* ===== READABILITY FIX: SECTION HEADINGS ===== */
+
+/* หัวข้อภายในส่วนต่าง ๆ ของเว็บไซต์ */
+main section h1,
+main section h2,
+main section h3,
+main .services h1,
+main .services h2,
+main .services h3 {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: #065f46 !important;
+    border-left: 5px solid #facc15;
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-shadow: none !important;
+}
+
+/* ข้อความอธิบายทั่วไปบนพื้นสีอ่อน */
+main .service-card p,
+main .service-card small,
+main .service-card h3 {
+    color: #172b25 !important;
+    -webkit-text-fill-color: #172b25 !important;
+}
