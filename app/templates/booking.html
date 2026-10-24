@@ -132,7 +132,7 @@
     <h1>จอง {{ field.name }}</h1>
 
     <div class="field-info">
-      <div id="fieldPrice" data-price="{{ field.price_per_hour }}" hidden></div>
+      <div id="fieldPrice" data-price="{{ field.price_per_hour }}" data-member-discount="{{ 15 if is_member else 0 }}" hidden></div>
       <p>ประเภท: {{ field.field_type }}</p>
       <div class="field-price">
         {{ "{:,.0f}".format(field.price_per_hour) }}
@@ -187,7 +187,7 @@
       </div>
 
       <div class="total-box full-width">
-        <strong>ยอดรวม</strong>
+        <strong>ยอดรวม{% if is_member %} (ลดสมาชิก 15% แล้ว){% endif %}</strong>
         <span class="total-price" id="totalPrice">
           -
         </span>
@@ -211,10 +211,12 @@
     const fieldPrice = document.getElementById("fieldPrice");
 
     const pricePerHour = Number(fieldPrice.dataset.price);
+    const discountPercent = Number(fieldPrice.dataset.memberDiscount);
 
     function updateBooking() {
       const hours = Number(hoursSelect.value);
-      const total = pricePerHour * hours;
+      const originalTotal = pricePerHour * hours;
+      const total = Math.floor(originalTotal * (100 - discountPercent) / 100);
 
       totalPrice.textContent =
         total.toLocaleString("th-TH", {

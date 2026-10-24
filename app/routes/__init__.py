@@ -163,6 +163,8 @@ def book_field(field_id):
     field = db.get_or_404(FootballField, field_id)
     if not field.is_active:
         abort(404, 'สนามนี้ยังไม่เปิดให้จอง')
+    user_id = session.get('user_id')
+    is_member = bool(user_id and db.session.get(User, user_id))
     if request.method == 'POST':
         if not valid_csrf('book_field_csrf'):
             abort(400, 'คำขอไม่ถูกต้อง กรุณาโหลดหน้าใหม่')
@@ -197,7 +199,7 @@ def book_field(field_id):
             booking = Booking(
                 field_id=field_id, customer_name=customer_name, phone=phone,
                 booking_date=booking_date, start_time=start_time,
-                end_time=end_dt.time(), total_price=field.price_per_hour * hours,
+                end_time=end_dt.time(), total_price=(field.price_per_hour * hours * (100 - (15 if is_member else 0))) // 100,
                 status='confirmed',
             )
             db.session.add(booking)
@@ -214,7 +216,7 @@ def book_field(field_id):
         except Exception:
             db.session.rollback()
             raise
-    return render_template('booking.html', field=field, csrf_token=csrf_for('book_field_csrf'))
+    return render_template('booking.html', field=field, is_member=is_member, csrf_token=csrf_for('book_field_csrf'))
 
 
 @main.route('/booking/success/<int:booking_id>')
