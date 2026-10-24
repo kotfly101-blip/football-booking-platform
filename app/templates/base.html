@@ -83,6 +83,7 @@
 
 <main>
 
+    {% if request.endpoint != 'main.book_field' %}
     {% with messages = get_flashed_messages(with_categories=true) %}
 
         {% if messages %}
@@ -98,6 +99,7 @@
         {% endif %}
 
     {% endwith %}
+    {% endif %}
 
     {% block content %}{% endblock %}
 
