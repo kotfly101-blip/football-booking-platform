@@ -1262,3 +1262,40 @@ main .register-page .register-form button[type="submit"]:hover {
         padding: 18px;
     }
 }
+
+/* Flash messages */
+.flash-message {
+    padding: 14px 18px;
+    margin: 16px auto;
+    max-width: 1100px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    border: 1px solid transparent;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.flash-success {
+    background-color: #dcfce7;
+    color: #166534;
+    border-color: #86efac;
+}
+
+.flash-error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-color: #fca5a5;
+}
+
+.flash-warning {
+    background-color: #fef3c7;
+    color: #92400e;
+    border-color: #fcd34d;
+}
+
+.flash-info {
+    background-color: #dbeafe;
+    color: #1e40af;
+    border-color: #93c5fd;
+}

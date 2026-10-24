@@ -2,7 +2,8 @@
 import hmac
 import re
 import secrets
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 from flask import Blueprint, abort, flash, redirect, render_template, request, session, url_for
 from sqlalchemy import or_
@@ -13,6 +14,16 @@ from app.models import Booking, BookingOwner, FootballField, User, Payment
 
 main = Blueprint('main', __name__)
 
+@main.app_template_filter("thai_datetime")
+def thai_datetime(value):
+    if value is None:
+        return "-"
+
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
+
+    bangkok_time = value.astimezone(ZoneInfo("Asia/Bangkok"))
+    return bangkok_time.strftime("%d/%m/%Y %H:%M")
 
 def csrf_for(key):
     if key not in session:
@@ -615,7 +626,7 @@ def admin_record_payment(booking_id):
         status='paid',
         method=method,
         provider='manual',
-        paid_at=datetime.now()
+        paid_at=datetime.now(timezone.utc).replace(tzinfo=None)
     )
 
     db.session.add(payment)
