@@ -1131,3 +1131,41 @@ main .container > p a {
     -webkit-text-fill-color: #facc15 !important;
     font-weight: 700;
 }
+
+/* ===== MY BOOKINGS PAGE CONTRAST FIX ===== */
+
+/* ข้อความอธิบายใต้หัวข้อ */
+main .my-bookings-page > p {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: #102a43 !important;
+    padding: 12px 16px;
+    border-radius: 8px;
+    line-height: 1.7;
+    margin: 16px 0 20px;
+}
+
+/* ทำให้ตารางประวัติการจองอ่านง่าย */
+main .my-bookings-page .history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+}
+
+/* หัวตาราง */
+main .my-bookings-page .history-table th {
+    background: #065f46 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/* ข้อมูลในตาราง */
+main .my-bookings-page .history-table td {
+    color: #172b25 !important;
+    -webkit-text-fill-color: #172b25 !important;
+}
+
+/* แถวสลับสีเพื่อให้อ่านง่าย */
+main .my-bookings-page .history-table tbody tr:nth-child(even) {
+    background: #eaf8f1;
+}
