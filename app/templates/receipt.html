@@ -111,7 +111,7 @@
     <p>
         <strong>วันที่ชำระเงิน:</strong>
         {% if payment.paid_at %}
-            {{ payment.paid_at.strftime('%d/%m/%Y %H:%M') }}
+            {{ payment.paid_at | thai_datetime }}
         {% else %}
             -
         {% endif %}

@@ -2,7 +2,8 @@
 import hmac
 import re
 import secrets
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from app.promotions import calculate_best_discount
 
 from flask import Blueprint, abort, flash, redirect, render_template, request, session, url_for
@@ -14,6 +15,16 @@ from app.models import Booking, BookingOwner, FootballField, User, Payment
 
 main = Blueprint('main', __name__)
 
+@main.app_template_filter("thai_datetime")
+def thai_datetime(value):
+    if value is None:
+        return "-"
+
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
+
+    bangkok_time = value.astimezone(ZoneInfo("Asia/Bangkok"))
+    return bangkok_time.strftime("%d/%m/%Y %H:%M")
 
 def csrf_for(key):
     if key not in session:
@@ -153,6 +164,8 @@ def book_field(field_id):
     field = db.get_or_404(FootballField, field_id)
     if not field.is_active:
         abort(404, 'สนามนี้ยังไม่เปิดให้จอง')
+    user_id = session.get('user_id')
+    is_member = bool(user_id and db.session.get(User, user_id))
     if request.method == 'POST':
         if not valid_csrf('book_field_csrf'):
             abort(400, 'คำขอไม่ถูกต้อง กรุณาโหลดหน้าใหม่')
@@ -217,7 +230,7 @@ def book_field(field_id):
         except Exception:
             db.session.rollback()
             raise
-    return render_template('booking.html', field=field, csrf_token=csrf_for('book_field_csrf'))
+    return render_template('booking.html', field=field, is_member=is_member, csrf_token=csrf_for('book_field_csrf'))
 
 
 @main.route('/booking/success/<int:booking_id>')
@@ -668,7 +681,7 @@ def admin_record_payment(booking_id):
         status='paid',
         method=method,
         provider='manual',
-        paid_at=datetime.now()
+        paid_at=datetime.now(timezone.utc).replace(tzinfo=None)
     )
 
     db.session.add(payment)
