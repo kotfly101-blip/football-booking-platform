@@ -3,6 +3,7 @@ import hmac
 import re
 import secrets
 from datetime import datetime, timedelta
+from app.promotions import calculate_best_discount
 
 from flask import Blueprint, abort, flash, redirect, render_template, request, session, url_for
 from sqlalchemy import or_
@@ -183,10 +184,23 @@ def book_field(field_id):
             if conflict:
                 flash('ช่วงเวลานี้มีผู้จองแล้ว กรุณาเลือกเวลาอื่น', 'error')
                 return redirect(url_for('main.book_field', field_id=field_id))
+            # Calculate the best eligible discount on the server.
+            user_id = session.get('user_id')
+            current_user = db.session.get(User, user_id) if user_id else None
+            promo_code = request.form.get('promo_code', '').strip()
+            original_price = field.price_per_hour * hours
+            pricing = calculate_best_discount(
+                original_price=original_price,
+                is_member=current_user is not None,
+                promo_code=promo_code,
+            )
+            if pricing['final_price'] <= 0:
+                raise ValueError('ยอดชำระต้องมากกว่า 0 บาท')
+
             booking = Booking(
                 field_id=field_id, customer_name=customer_name, phone=phone,
                 booking_date=booking_date, start_time=start_time,
-                end_time=end_dt.time(), total_price=field.price_per_hour * hours,
+                end_time=end_dt.time(), total_price=pricing['final_price'],
                 status='confirmed',
             )
             db.session.add(booking)
@@ -214,7 +228,46 @@ def booking_success(booking_id):
     guest_access = booking_id in session.get('guest_booking_ids', [])
     if not (owned or guest_access or (session.get('user_id') and require_admin_if_present())):
         abort(403)
-    return render_template('booking_success.html', booking=booking)
+    is_paid = Payment.query.filter_by(
+        booking_id=booking.id,
+        status='paid'
+    ).first() is not None
+    return render_template(
+        'booking_success.html',
+        booking=booking,
+        is_paid=is_paid
+    )
+
+
+
+@main.route('/booking/<int:booking_id>/test-qr.png')
+def booking_test_qr(booking_id):
+    from io import BytesIO
+    from flask import send_file
+    from app.promptpay import create_test_qr
+
+    booking = db.get_or_404(Booking, booking_id)
+    owner = db.session.get(BookingOwner, booking_id)
+    owned = bool(owner and owner.user_id == session.get('user_id'))
+    guest_access = booking_id in session.get('guest_booking_ids', [])
+
+    if not (owned or guest_access or
+            (session.get('user_id') and require_admin_if_present())):
+        abort(403)
+
+    paid = Payment.query.filter_by(
+        booking_id=booking.id,
+        status='paid'
+    ).first() is not None
+
+
+    if paid or booking.status == 'cancelled':
+        abort(403)
+
+    image = create_test_qr(booking.total_price)
+    response = send_file(BytesIO(image), mimetype='image/png')
+    response.headers['Cache-Control'] = 'no-store'
+    return response
 
 
 def require_admin_if_present():

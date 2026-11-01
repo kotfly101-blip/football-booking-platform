@@ -22,7 +22,9 @@ def create_app():
     app.config["SECRET_KEY"] = secret_key
 
     # ตั้งค่าฐานข้อมูล
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///football.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+    "DATABASE_URL", "sqlite:///football.db"
+    )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # ตั้งค่าความปลอดภัยของ Session
