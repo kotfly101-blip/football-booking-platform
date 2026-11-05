@@ -38,7 +38,7 @@
 
                 {% if is_admin %}
 
-                    <a href="{{ url_for('main.admin_bookings') }}">
+                <a href="{{ url_for('main.admin_bookings') }}">
                         จัดการการจอง
                     </a>
 
@@ -51,6 +51,14 @@
                     </a>
 
                 {% endif %}
+
+                {% if is_admin %}
+                    <a href="{{ url_for('main.admin_dashboard') }}"
+                        style="background:#facc15; color:#14213d; padding:10px 14px; border-radius:8px; font-weight:bold; text-decoration:none;">
+                        ← กลับหน้า Admin
+                    </a>
+                {% endif %}
+
 
                 <form action="{{ url_for('main.logout') }}"
                       method="POST">
