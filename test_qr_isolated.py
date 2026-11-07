@@ -18,14 +18,28 @@ with tempfile.TemporaryDirectory(prefix="football_qr_test_") as folder:
 
     try:
         with app.app_context():
+            assert db.engine.dialect.name == "sqlite", (
+                "Safety error: test database must be SQLite"
+            )
+            assert Path(db.engine.url.database).resolve() == database.resolve(), (
+                "Safety error: unexpected database path"
+            )
+
+            db.create_all()
+
             field = FootballField(
                 name="Test Field",
                 field_type="7-a-side",
                 price_per_hour=800,
                 is_active=True
             )
-            user = User(username="qr_test_member", email="qr@example.test")
+
+            user = User(
+                username="qr_test_member",
+                email="qr@example.test"
+            )
             user.set_password(secrets.token_urlsafe(20))
+
             db.session.add_all([field, user])
             db.session.flush()
 
@@ -39,9 +53,17 @@ with tempfile.TemporaryDirectory(prefix="football_qr_test_") as folder:
                 total_price=1600,
                 status="confirmed"
             )
+
             db.session.add(booking)
             db.session.flush()
-            db.session.add(BookingOwner(booking_id=booking.id, user_id=user.id))
+
+            db.session.add(
+                BookingOwner(
+                    booking_id=booking.id,
+                    user_id=user.id
+                )
+            )
+
             booking_id = booking.id
             user_id = user.id
             db.session.commit()
@@ -49,10 +71,12 @@ with tempfile.TemporaryDirectory(prefix="football_qr_test_") as folder:
         with app.test_client() as client:
             url = f"/booking/{booking_id}/test-qr.png"
 
+            # Test 1: Unauthorized access
             response = client.get(url)
             assert response.status_code == 403, response.status_code
             print("PASS: unauthorized access denied")
 
+            # Test 2: Owner can view unpaid QR
             with client.session_transaction() as sess:
                 sess["user_id"] = user_id
 
@@ -62,21 +86,28 @@ with tempfile.TemporaryDirectory(prefix="football_qr_test_") as folder:
             assert response.headers.get("Cache-Control") == "no-store"
             print("PASS: owner can view unpaid test QR")
 
+            # Test 3: Paid booking QR denied
             with app.app_context():
-                db.session.add(Payment(
-                    booking_id=booking_id,
-                    amount=1600,
-                    status="paid",
-                    method="cash"
-                ))
+                db.session.add(
+                    Payment(
+                        booking_id=booking_id,
+                        amount=1600,
+                        status="paid",
+                        method="cash"
+                    )
+                )
                 db.session.commit()
 
             response = client.get(url)
             assert response.status_code == 403, response.status_code
             print("PASS: paid booking QR denied")
 
+            # Test 4: Cancelled booking QR denied
             with app.app_context():
-                Payment.query.filter_by(booking_id=booking_id).delete()
+                Payment.query.filter_by(
+                    booking_id=booking_id
+                ).delete()
+
                 booking = db.session.get(Booking, booking_id)
                 booking.status = "cancelled"
                 db.session.commit()

@@ -16,90 +16,245 @@ with tempfile.TemporaryDirectory(prefix="football_payment_test_") as folder:
 
     app = create_app()
     app.config["TESTING"] = True
+
     try:
+
         with app.app_context():
-            field = FootballField(name="สนามทดสอบ A", field_type="7-a-side", price_per_hour=800, is_active=True)
-            admin = User(username="footballadmin", email="footballadmin@example.invalid", is_admin=True)
+            assert db.engine.dialect.name == "sqlite", (
+            "Safety error: test database must be SQLite"
+            )
+            assert Path(db.engine.url.database).resolve() == db_path.resolve(), (
+            "Safety error: unexpected database path"
+            )
+
+        with app.app_context():
+            db.create_all()
+
+            field = FootballField(
+                name="สนามทดสอบ A",
+                field_type="7-a-side",
+                price_per_hour=800,
+                is_active=True,
+            )
+
+            admin = User(
+                username="footballadmin",
+                email="footballadmin@example.invalid",
+                is_admin=True,
+            )
             admin.set_password("TestOnly2026!Strong")
-            member = User(username="testfootball01", email="testfootball01@example.invalid", is_admin=False)
+
+            member = User(
+                username="testfootball01",
+                email="testfootball01@example.invalid",
+                is_admin=False,
+            )
             member.set_password("TestOnly2026!Strong")
+
             db.session.add_all([field, admin, member])
             db.session.flush()
+
             admin_id, member_id = admin.id, member.id
             future = (datetime.now() + timedelta(days=14)).date()
             ids = []
-            for status, price in [("confirmed", 1600), ("confirmed", 900), ("cancelled", 800), ("confirmed", 0), ("confirmed", 700)]:
-                booking = Booking(field_id=field.id, customer_name="สมชาย ทดสอบ", phone="0800000000",
-                                  booking_date=future, start_time=time(10), end_time=time(12),
-                                  total_price=price, status=status)
+
+            for status, price in [
+                ("confirmed", 1600),
+                ("confirmed", 900),
+                ("cancelled", 800),
+                ("confirmed", 0),
+                ("confirmed", 700),
+            ]:
+                booking = Booking(
+                    field_id=field.id,
+                    customer_name="สมชาย ทดสอบ",
+                    phone="0800000000",
+                    booking_date=future,
+                    start_time=time(10),
+                    end_time=time(12),
+                    total_price=price,
+                    status=status,
+                )
                 db.session.add(booking)
                 db.session.flush()
                 ids.append(booking.id)
+
             db.session.commit()
 
         def payment_count(booking_id):
             with app.app_context():
-                return Payment.query.filter_by(booking_id=booking_id).count()
+                return Payment.query.filter_by(
+                    booking_id=booking_id
+                ).count()
 
         def payment_for(booking_id):
             with app.app_context():
-                p = Payment.query.filter_by(booking_id=booking_id).first()
-                return None if p is None else (p.amount, p.method, p.status, p.provider, p.paid_at)
+                p = Payment.query.filter_by(
+                    booking_id=booking_id
+                ).first()
+                return None if p is None else (
+                    p.amount,
+                    p.method,
+                    p.status,
+                    p.provider,
+                    p.paid_at,
+                )
 
         url = lambda bid: f"/admin/bookings/{bid}/payment"
+
         with app.test_client() as client:
-            r = client.post(url(ids[0]), data={"method": "cash"})
-            assert r.status_code in (302, 303) and payment_count(ids[0]) == 0
+            # 1. Guest cannot record payment
+            r = client.post(
+                url(ids[0]),
+                data={"method": "cash"},
+            )
+            assert (
+                r.status_code in (302, 303)
+                and payment_count(ids[0]) == 0
+            )
             print("PASS: unauthenticated payment blocked")
 
+            # 2. Member cannot record payment
             with client.session_transaction() as sess:
                 sess["user_id"] = member_id
                 sess["admin_booking_csrf"] = secrets.token_urlsafe(32)
                 token = sess["admin_booking_csrf"]
-            r = client.post(url(ids[0]), data={"method": "cash", "csrf_token": token})
-            assert r.status_code == 403 and payment_count(ids[0]) == 0
+
+            r = client.post(
+                url(ids[0]),
+                data={
+                    "method": "cash",
+                    "csrf_token": token,
+                },
+            )
+            assert (
+                r.status_code == 403
+                and payment_count(ids[0]) == 0
+            )
             print("PASS: non-admin payment blocked")
 
+            # Switch to admin
             with client.session_transaction() as sess:
                 sess["user_id"] = admin_id
-            r = client.post(url(ids[0]), data={"method": "cash"})
-            assert r.status_code == 400 and payment_count(ids[0]) == 0
+
+            # 3. Missing CSRF
+            r = client.post(
+                url(ids[0]),
+                data={"method": "cash"},
+            )
+            assert (
+                r.status_code == 400
+                and payment_count(ids[0]) == 0
+            )
             print("PASS: missing CSRF rejected")
 
-            r = client.post(url(ids[0]), data={"method": "card", "csrf_token": token})
-            assert r.status_code in (302, 303) and payment_count(ids[0]) == 0
+            # 4. Invalid payment method
+            r = client.post(
+                url(ids[0]),
+                data={
+                    "method": "card",
+                    "csrf_token": token,
+                },
+            )
+            assert (
+                r.status_code in (302, 303)
+                and payment_count(ids[0]) == 0
+            )
             print("PASS: invalid payment method rejected")
 
-            r = client.post(url(ids[2]), data={"method": "cash", "csrf_token": token})
-            assert r.status_code in (302, 303) and payment_count(ids[2]) == 0
+            # 5. Cancelled booking
+            r = client.post(
+                url(ids[2]),
+                data={
+                    "method": "cash",
+                    "csrf_token": token,
+                },
+            )
+            assert (
+                r.status_code in (302, 303)
+                and payment_count(ids[2]) == 0
+            )
             print("PASS: cancelled booking payment rejected")
 
-            r = client.post(url(ids[3]), data={"method": "cash", "csrf_token": token})
-            assert r.status_code in (302, 303) and payment_count(ids[3]) == 0
+            # 6. Zero amount
+            r = client.post(
+                url(ids[3]),
+                data={
+                    "method": "cash",
+                    "csrf_token": token,
+                },
+            )
+            assert (
+                r.status_code in (302, 303)
+                and payment_count(ids[3]) == 0
+            )
             print("PASS: zero-amount payment rejected")
 
-            r = client.post(url(ids[0]), data={"method": "cash", "csrf_token": token})
+            # 7. Cash payment
+            r = client.post(
+                url(ids[0]),
+                data={
+                    "method": "cash",
+                    "csrf_token": token,
+                },
+            )
             p = payment_for(ids[0])
+
             assert r.status_code in (302, 303) and p is not None
-            assert p[0] == 1600 and p[1] == "cash" and p[2] == "paid" and p[3] == "manual" and p[4] is not None
+            assert (
+                p[0] == 1600
+                and p[1] == "cash"
+                and p[2] == "paid"
+                and p[3] == "manual"
+                and p[4] is not None
+            )
             print("PASS: cash payment recorded correctly")
 
-            r = client.post(url(ids[1]), data={"method": "bank_transfer", "csrf_token": token})
+            # 8. Bank transfer
+            r = client.post(
+                url(ids[1]),
+                data={
+                    "method": "bank_transfer",
+                    "csrf_token": token,
+                },
+            )
             p = payment_for(ids[1])
+
             assert r.status_code in (302, 303) and p is not None
-            assert p[0] == 900 and p[1] == "bank_transfer" and p[2] == "paid"
+            assert (
+                p[0] == 900
+                and p[1] == "bank_transfer"
+                and p[2] == "paid"
+            )
             print("PASS: bank transfer payment recorded correctly")
 
-            r = client.post(url(ids[0]), data={"method": "cash", "csrf_token": token})
-            assert r.status_code in (302, 303) and payment_count(ids[0]) == 1
+            # 9. Duplicate payment
+            r = client.post(
+                url(ids[0]),
+                data={
+                    "method": "cash",
+                    "csrf_token": token,
+                },
+            )
+            assert (
+                r.status_code in (302, 303)
+                and payment_count(ids[0]) == 1
+            )
             print("PASS: duplicate payment rejected")
 
+            # 10. Paid totals
             with app.app_context():
-                paid = Payment.query.filter_by(status="paid").all()
-                assert len(paid) == 2 and sum(p.amount for p in paid) == 2500
+                paid = Payment.query.filter_by(
+                    status="paid"
+                ).all()
+                assert (
+                    len(paid) == 2
+                    and sum(p.amount for p in paid) == 2500
+                )
             print("PASS: paid totals are correct")
 
         print("PASS: isolated payment tests")
+
     finally:
         with app.app_context():
             db.session.remove()

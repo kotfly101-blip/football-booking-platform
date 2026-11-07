@@ -15,6 +15,24 @@ from app.models import Booking, BookingOwner, FootballField, User, Payment
 
 main = Blueprint('main', __name__)
 
+def lock_field_for_booking(field_id):
+    """Lock a field row for the current database transaction.
+
+    PostgreSQL uses SELECT FOR UPDATE.
+    SQLite does not provide equivalent row-level locking.
+    """
+    field = (
+        db.session.query(FootballField)
+        .filter(FootballField.id == field_id)
+        .with_for_update()
+        .first()
+    )
+
+    if field is None:
+        abort(404, "ไม่พบสนามฟุตบอล")
+
+    return field
+
 @main.app_template_filter("thai_datetime")
 def thai_datetime(value):
     if value is None:
@@ -185,8 +203,16 @@ def book_field(field_id):
             end_dt = start_dt + timedelta(hours=hours)
             if start_dt <= datetime.now():
                 raise ValueError('กรุณาเลือกเวลาในอนาคต')
+
             if end_dt.date() != booking_date:
                 raise ValueError('ไม่รองรับการจองข้ามวัน')
+
+            # Lock the field before checking for overlapping bookings.
+            locked_field = lock_field_for_booking(field_id)
+
+            if not locked_field.is_active:
+                raise ValueError('สนามนี้ยังไม่เปิดให้จอง')
+
             conflict = Booking.query.filter(
                 Booking.field_id == field_id,
                 Booking.booking_date == booking_date,
@@ -194,9 +220,12 @@ def book_field(field_id):
                 Booking.start_time < end_dt.time(),
                 Booking.end_time > start_time,
             ).first()
+
             if conflict:
+                db.session.rollback()
                 flash('ช่วงเวลานี้มีผู้จองแล้ว กรุณาเลือกเวลาอื่น', 'error')
                 return redirect(url_for('main.book_field', field_id=field_id))
+
             # Calculate the best eligible discount on the server.
             user_id = session.get('user_id')
             current_user = db.session.get(User, user_id) if user_id else None
@@ -407,7 +436,6 @@ def admin_bookings():
         csrf_token=csrf_for('admin_booking_csrf')
     )
 
-
 @main.route('/admin/bookings/<int:booking_id>/status', methods=['POST'])
 def admin_update_booking_status(booking_id):
     if not session.get('user_id'):
@@ -429,6 +457,8 @@ def admin_update_booking_status(booking_id):
         return redirect(url_for('main.admin_bookings'))
 
     if new_status == 'confirmed':
+        lock_field_for_booking(booking.field_id)
+
         conflict = Booking.query.filter(
             Booking.id != booking.id,
             Booking.field_id == booking.field_id,
