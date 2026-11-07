@@ -27,6 +27,14 @@ def create_app():
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "pool_pre_ping": True,
+        "pool_recycle": 300,
+    }
+
+
+
     # ตั้งค่าความปลอดภัยของ Session
     app.config["SESSION_COOKIE_HTTPONLY"] = True
     app.config["SESSION_COOKIE_SAMESITE"] = "Lax"

@@ -22,3 +22,6 @@ backups/
 *.orig
 *.tmp
 *~
+
+# Local admin maintenance script
+reset_neon_admin_local.py
