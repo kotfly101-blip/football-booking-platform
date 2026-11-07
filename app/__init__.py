@@ -49,8 +49,7 @@ def create_app():
     from app import models
 
     # สร้างตารางที่ยังไม่มี
-    with app.app_context():
-        db.create_all()
+    # Database tables are managed separately; do not create them at startup.
 
     # ลงทะเบียน Routes
     from app.routes import main
