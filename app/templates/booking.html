@@ -293,51 +293,14 @@
 
       <div class="form-group">
         <label for="start_time">เวลาเริ่มต้น</label>
-
-      <div class="time-input-wrapper" id="timeWrapper">
-        <input
-          type="time"
-          id="start_time"
-          name="start_time"
-          step="60"
-          required
-        >
-</div>
-
-          <button
-            type="button"
-            id="open_time_picker"
-            class="time-picker-button"
-            aria-label="เปิดรายการเวลา"
-            aria-controls="time_options"
-            aria-expanded="false"
-            title="เลือกเวลา"
+        <div class="time-input-wrapper" id="timeWrapper">
+          <input
+            type="time"
+            id="start_time"
+            name="start_time"
+            step="60"
+            required
           >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="9"></circle>
-              <path d="M12 7v5l3 2"></path>
-            </svg>
-          </button>
-
-          <div
-            id="time_options"
-            class="time-options"
-            aria-label="รายการเวลาเริ่มต้น"
-            hidden
-          >
-            {% for h in range(24) %}
-              {% for m in range(60) %}
-                <button
-                  type="button"
-                  class="time-option"
-                  data-time="{{ '%02d:%02d'|format(h, m) }}"
-                >
-                  {{ '%02d:%02d'|format(h, m) }}
-                </button>
-              {% endfor %}
-            {% endfor %}
-          </div>
-
         </div>
       </div>
 

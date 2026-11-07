@@ -1388,3 +1388,100 @@ main table th {
         max-width: 100%;
     }
 }
+
+/* ===== FINAL UI: READABILITY & ANIMATION ===== */
+
+/* ข้อความทั่วไป */
+main {
+    color: #102a43;
+}
+
+main label,
+main .form-label {
+    color: #102a43 !important;
+    -webkit-text-fill-color: #102a43 !important;
+}
+
+/* ช่องกรอกข้อมูล */
+main input,
+main select,
+main textarea {
+    background: #ffffff !important;
+    color: #102a43 !important;
+    -webkit-text-fill-color: #102a43 !important;
+}
+
+/* ปุ่มหลัก */
+main button,
+main .booking-btn {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+main button:hover,
+main .booking-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* การ์ด */
+.service-card,
+.field-card,
+.stat-card,
+.payment-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.service-card:hover,
+.field-card:hover,
+.stat-card:hover,
+.payment-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 50, 30, 0.2);
+}
+
+/* Animation เมื่อเปิดหน้า */
+@keyframes fbFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+main {
+    animation: fbFadeIn 0.45s ease-out both;
+}
+
+/* รองรับผู้ใช้ที่ต้องการลดการเคลื่อนไหว */
+@media (prefers-reduced-motion: reduce) {
+    main {
+        animation: none;
+    }
+
+    .service-card,
+    .field-card,
+    .stat-card,
+    .payment-card,
+    main button,
+    main .booking-btn {
+        transition: none;
+    }
+}
+/* Final interaction safeguards */
+main button:disabled:hover,
+main .booking-btn:disabled:hover {
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    main button:hover,
+    main .booking-btn:hover,
+    .service-card:hover,
+    .field-card:hover,
+    .stat-card:hover,
+    .payment-card:hover {
+        transform: none;
+    }
+}
