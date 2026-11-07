@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 
 {% block title %}จองสนามฟุตบอล{% endblock %}
 
@@ -342,8 +342,16 @@
       </div>
 
       <div class="total-box full-width">
-        <strong>ยอดรวมก่อนหักส่วนลด</strong>
+        <strong>ราคาก่อนส่วนลด</strong>
         <span class="total-price" id="totalPrice">-</span>
+      </div>
+      <div class="total-box full-width">
+        <strong>ส่วนลดที่ได้รับ</strong>
+        <span id="discountPrice">-</span>
+      </div>
+      <div class="total-box full-width">
+        <strong>ยอดสุทธิที่ต้องชำระ</strong>
+        <span class="total-price" id="finalPrice">-</span>
       </div>
 
       <button type="submit" class="booking-btn full-width">
@@ -361,6 +369,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const endTime = document.getElementById("end_time");
   const totalPrice = document.getElementById("totalPrice");
   const fieldPrice = document.getElementById("fieldPrice");
+  const discountPrice = document.getElementById("discountPrice");
+  const finalPrice = document.getElementById("finalPrice");
+  const promoInput = document.getElementById("promo_code");
+  const isMember = {{ 'true' if is_member else 'false' }};
+  const money = value => value.toLocaleString("th-TH", {
+    maximumFractionDigits: 0
+  }) + " บาท";
 
   const pricePerHour = Number(fieldPrice.dataset.price);
   const timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
@@ -369,10 +384,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const hours = Number(hoursSelect.value);
     const total = pricePerHour * hours;
 
-    totalPrice.textContent =
-      total.toLocaleString("th-TH", {
-        maximumFractionDigits: 0
-      }) + " บาท";
+    const memberDiscount = isMember ? Math.floor(total * 10 / 100) : 0;
+    const codeDiscount = promoInput.value.trim().toUpperCase() === "FOOTBALL100"
+      ? Math.min(100, total) : 0;
+    const discount = Math.max(memberDiscount, codeDiscount);
+
+    totalPrice.textContent = money(total);
+    discountPrice.textContent = "- " + money(discount);
+    finalPrice.textContent = money(total - discount);
 
     const timeValue = startTime.value.trim();
 
@@ -412,6 +431,7 @@ document.addEventListener("DOMContentLoaded", function () {
       String(minute).padStart(2, "0");
   }
 
+  promoInput.addEventListener("input", updateBooking);
   hoursSelect.addEventListener("change", updateBooking);
   startTime.addEventListener("input", updateBooking);
   startTime.addEventListener("change", updateBooking);
@@ -421,3 +441,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 {% endblock %}
+
+
+
+
+
