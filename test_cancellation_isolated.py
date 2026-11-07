@@ -18,6 +18,8 @@ with tempfile.TemporaryDirectory(prefix="football_cancel_test_") as folder:
     app.config["TESTING"] = True
     try:
         with app.app_context():
+            db.create_all()
+
             field = FootballField(name="สนามทดสอบ A", field_type="7-a-side", price_per_hour=800, is_active=True)
             owner = User(username="testfootball01", email="testfootball01@example.invalid", is_admin=False)
             owner.set_password("TestOnly2026!Strong")

@@ -1,4 +1,4 @@
-* {
+﻿* {
     box-sizing: border-box;
 }
 
@@ -1484,4 +1484,249 @@ main .booking-btn:disabled:hover {
     .payment-card:hover {
         transform: none;
     }
+}
+
+/* ===== UI POLISH: CONTRAST & ACCESSIBILITY ===== */
+
+/* ข้อความในตาราง */
+main table tbody td,
+main table tbody td a {
+    color: #102a43 !important;
+    -webkit-text-fill-color: #102a43 !important;
+}
+
+/* ข้อความในช่องกรอก */
+main input,
+main select,
+main textarea {
+    background-color: #ffffff !important;
+    color: #102a43 !important;
+    -webkit-text-fill-color: #102a43 !important;
+}
+
+/* ชื่อช่องกรอกภายในแบบฟอร์มพื้นขาว */
+main form label,
+main form .form-label {
+    color: #102a43 !important;
+    -webkit-text-fill-color: #102a43 !important;
+}
+
+/* ข้อความแจ้งเตือน */
+.flash-success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.flash-error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* เน้นกรอบเมื่อใช้คีย์บอร์ด */
+main :is(a, button, input, select, textarea):focus-visible {
+    outline: 3px solid #facc15;
+    outline-offset: 3px;
+}
+
+/* ลดภาพเคลื่อนไหวตามการตั้งค่าผู้ใช้ */
+@media (prefers-reduced-motion: reduce) {
+    main,
+    main *,
+    main *::before,
+    main *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* ===== ANIMATED STADIUM BACKGROUND ===== */
+
+.stadium-slideshow {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background: #062d20;
+}
+
+.stadium-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: stadiumCycle 28s linear infinite;
+}
+
+.stadium-slide-1 {
+    background-image: url("../images/football-stadium.png");
+    animation-delay: 0s;
+}
+
+.stadium-slide-2 {
+    background-image: url("../images/stadium-night.jpg");
+    animation-delay: -21s;
+}
+
+.stadium-slide-3 {
+    background-image: url("../images/stadium-sunset.jpg");
+    animation-delay: -14s;
+}
+
+.stadium-slide-4 {
+    background-image: url("../images/stadium-aerial.jpg");
+    animation-delay: -7s;
+}
+
+@keyframes stadiumCycle {
+    0%   { opacity: 0; transform: scale(1); }
+    5%   { opacity: 1; }
+    25%  { opacity: 1; }
+    30%  { opacity: 0; }
+    100% { opacity: 0; transform: scale(1.08); }
+}
+
+/* ให้พื้นหลังอยู่หลังเนื้อหา */
+body {
+    position: relative;
+    isolation: isolate;
+    background: #062d20 !important;
+}
+
+header,
+main {
+    position: relative;
+    z-index: 1;
+}
+
+/* ลดการเคลื่อนไหวตามการตั้งค่าผู้ใช้ */
+@media (prefers-reduced-motion: reduce) {
+    .stadium-slide {
+        animation: none !important;
+        opacity: 0;
+        transform: none;
+    }
+
+    .stadium-slide-1 {
+        opacity: 1;
+    }
+}
+
+
+
+/* ===== SLIDESHOW VISIBILITY FIX ===== */
+html {
+    background: #062d20;
+}
+
+html body {
+    background: transparent !important;
+}
+
+.stadium-slideshow {
+    z-index: 0;
+}
+
+.stadium-slideshow::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 25, 18, 0.30);
+    pointer-events: none;
+}
+
+body > header,
+body > main {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* ===== SLIDESHOW LAYER CORRECTION ===== */
+html {
+    background: #062d20 !important;
+}
+
+html body {
+    background: transparent !important;
+    isolation: auto;
+}
+
+.stadium-slideshow {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+body > header,
+body > main {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* ===== FIELD CARD IMAGE POLISH ===== */
+
+.field-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+}
+
+.field-card {
+    overflow: hidden;
+    padding: 16px;
+    background: #ffffff;
+    border: 1px solid #d9e9df;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 30, 20, 0.14);
+}
+
+.field-card-image {
+    display: block;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 12px;
+    background: #e2e8f0;
+}
+
+.field-card h2 {
+    margin: 16px 0 10px;
+    font-size: 23px;
+}
+
+.field-card p {
+    color: #243746;
+    line-height: 1.6;
+}
+
+.field-card .booking-btn {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .field-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .field-card-image {
+        height: 200px;
+    }
+}
+
+
+/* ===== FIELD DUPLICATE IMAGE FIX ===== */
+.field-card::before {
+    content: none !important;
+    display: none !important;
 }

@@ -21,6 +21,9 @@ with tempfile.TemporaryDirectory(prefix="football_member_test_") as folder:
     app = create_app()
     app.config["TESTING"] = True
 
+    with app.app_context():
+        db.create_all()
+
     try:
         with app.test_client() as client:
 

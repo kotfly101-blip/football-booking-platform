@@ -1,4 +1,4 @@
-
+﻿
 {% extends "base.html" %}
 
 {% block title %}รายการสนามฟุตบอล{% endblock %}
@@ -10,6 +10,18 @@
 <div class="field-grid">
     {% for field in fields %}
     <div class="field-card">
+        {% set field_image = {
+            'สนาม A': 'field-a.jpg',
+            'สนาม B': 'field-b.jpg',
+            'สนาม C': 'field-c.jpg',
+            'สนาม D': 'field-d.jpg',
+            'สนาม E': 'field-e.jpg'
+        }.get(field.name, 'football-stadium.png') %}
+        <img
+            src="{{ url_for('static', filename='images/' ~ field_image) }}"
+            alt="ภาพประกอบ {{ field.name }}"
+            class="field-card-image"
+            loading="lazy">
         <h2>{{ field.name }}</h2>
         <p>ประเภท: {{ field.field_type }}</p>
         <p>ราคา: {{ field.price_per_hour }} บาท/ชั่วโมง</p>
