@@ -1331,3 +1331,60 @@ main .register-page .register-form button[type="submit"]:hover {
     background: #facc15;
     text-decoration: underline;
 }
+/* UI readability improvements */
+main label,
+main .form-label {
+    color: #102a43;
+    font-weight: 700;
+}
+
+main input,
+main select,
+main textarea {
+    background-color: #ffffff;
+    color: #102a43;
+    font-size: 16px;
+}
+
+main input::placeholder,
+main textarea::placeholder {
+    color: #64748b;
+}
+
+main input:focus,
+main select:focus,
+main textarea:focus {
+    outline: 2px solid #059669;
+    outline-offset: 2px;
+}
+
+main button,
+main .btn {
+    font-weight: 700;
+}
+
+main table {
+    background: #ffffff;
+    color: #102a43;
+}
+
+main table td {
+    color: #102a43;
+}
+
+main table th {
+    color: #ffffff;
+    background: #065f46;
+}
+
+@media (max-width: 768px) {
+    main table {
+        font-size: 14px;
+    }
+
+    main input,
+    main select,
+    main textarea {
+        max-width: 100%;
+    }
+}
