@@ -1,38 +1,35 @@
-
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
+<div class="container register-page login-page">
     <h2>เข้าสู่ระบบ</h2>
     <p>Football Booking Platform</p>
 
-    <form method="POST">
+    <form method="POST" class="register-form login-form">
         <input type="hidden"
                name="csrf_token"
                value="{{ csrf_token }}">
 
-        <div>
-            <label for="username">ชื่อผู้ใช้</label>
-            <input type="text"
-                   id="username"
-                   name="username"
-                   required
-                   autocomplete="username">
-        </div>
+        <label for="username">ชื่อผู้ใช้</label>
+        <input type="text"
+               id="username"
+               name="username"
+               required
+               autocomplete="username">
 
-        <div>
-            <label for="password">รหัสผ่าน</label>
-            <input type="password"
-                   id="password"
-                   name="password"
-                   required
-                   autocomplete="current-password">
-        </div>
+        <label for="password">รหัสผ่าน</label>
+        <input type="password"
+               id="password"
+               name="password"
+               required
+               autocomplete="current-password">
 
-        <button type="submit">เข้าสู่ระบบ</button>
+        <button type="submit">
+            เข้าสู่ระบบ
+        </button>
     </form>
 
-    <p>
+    <p class="login-register-link">
         ยังไม่มีบัญชี?
         <a href="{{ url_for('main.register') }}">
             สมัครสมาชิก
